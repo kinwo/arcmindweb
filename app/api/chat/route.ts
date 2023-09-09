@@ -1,4 +1,4 @@
-// TODO - Create an ArcMind AI API client
+// TODO: Create an ArcMind AI API client
 
 // Set the runtime to edge to use the Vercel Edge Functions feature
 export const runtime = 'edge';
