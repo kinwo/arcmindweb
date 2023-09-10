@@ -9,15 +9,13 @@ import { identity } from './identity';
 
 // Use `process.env` if available provoded, or fall back to local
 const effectiveCanisterId = canisterId?.toString() ?? '';
-const dfxNetworkHost = process.env.DFX_NETWORK_HOST || 'http://127.0.0.1:8000';
+const icHost = process.env.IC_HOST || 'http://127.0.0.1:8000';
 
 const agent = new HttpAgent({
   identity: await identity,
-  host: dfxNetworkHost,
+  host: icHost,
   fetch,
 });
-
-console.info(`effectiveCanisterId=${effectiveCanisterId}`);
 
 export const actor = createActor(effectiveCanisterId, {
   agent,
