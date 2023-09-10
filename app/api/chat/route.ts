@@ -1,12 +1,12 @@
-// TODO: Create an ArcMind AI API client
-
-// Set the runtime to edge to use the Vercel Edge Functions feature
-export const runtime = 'edge';
+import { actor } from '../../canister/arcmindai';
 
 export async function POST(req: Request) {
   const { messages } = await req.json();
+  const question = messages[0].content;
 
-  return new Response(`I am an Edge Function by Henry Chan!`, {
+  const result = await actor.ask(question);
+
+  return new Response(result, {
     status: 200,
   });
 }

@@ -1,5 +1,5 @@
 {
-  "name": "my-ai-app",
+  "name": "arcmindweb",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,18 +9,33 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@dfinity/agent": "^0.19.2",
+    "@dfinity/assets": "^0.19.2",
+    "@dfinity/candid": "^0.19.2",
+    "@dfinity/identity": "^0.19.2",
+    "@dfinity/identity-secp256k1": "^0.19.2",
+    "@dfinity/principal": "^0.19.2",
     "@types/node": "20.6.0",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "ai": "^2.2.12",
     "autoprefixer": "10.4.15",
+    "crypto": "npm:crypto-browserify",
+    "encoding": "^0.1.13",
     "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",
+    "isomorphic-fetch": "^3.0.0",
     "next": "13.4.19",
     "postcss": "8.4.29",
+    "prettier": "^3.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "sha256-file": "^1.0.0",
+    "stream": "npm:stream-browserify",
     "tailwindcss": "3.3.3",
     "typescript": "5.2.2"
+  },
+  "devDependencies": {
+    "@types/isomorphic-fetch": "^0.0.36"
   }
 }

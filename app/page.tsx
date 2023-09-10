@@ -3,14 +3,16 @@
 import { useChat } from 'ai/react';
 
 export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    initialInput: 'My name is Henry Chan. What is my first name?',
+  });
 
   return (
-    <main className="mx-auto w-full h-screen max-w-[800PX] p-24 flex flex-col">
+    <main className="mx-auto w-full h-screen max-w-[800px] p-24 flex flex-col">
       <section className="mb-auto m">
         {messages.map((m) => (
           <div className="mb-4" key={m.id}>
-            {m.role === 'user' ? 'User: ' : 'AI: '}
+            {m.role === 'user' ? 'User: ' : 'ArcMind: '}
             {m.content}
           </div>
         ))}
