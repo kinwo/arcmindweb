@@ -1,4 +1,14 @@
 export const idlFactory = ({ IDL }) => {
+  const ChatRole = IDL.Variant({
+    'System' : IDL.Null,
+    'User' : IDL.Null,
+    'ArcMind' : IDL.Null,
+  });
+  const ChatHistory = IDL.Record({
+    'content' : IDL.Text,
+    'role' : ChatRole,
+    'created_at' : IDL.Nat64,
+  });
   const GoalStatus = IDL.Variant({
     'Complete' : IDL.Null,
     'Scheduled' : IDL.Null,
@@ -14,6 +24,7 @@ export const idlFactory = ({ IDL }) => {
   return IDL.Service({
     'ask' : IDL.Func([IDL.Text], [IDL.Text], []),
     'get_brain_canister' : IDL.Func([], [IDL.Opt(IDL.Principal)], ['query']),
+    'get_chathistory' : IDL.Func([], [IDL.Vec(ChatHistory)], ['query']),
     'get_goal' : IDL.Func([IDL.Nat64], [IDL.Opt(Goal)], ['query']),
     'get_owner' : IDL.Func([], [IDL.Opt(IDL.Principal)], ['query']),
     'insert_goal' : IDL.Func([IDL.Text], [], []),
