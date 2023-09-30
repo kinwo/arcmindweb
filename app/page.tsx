@@ -4,8 +4,10 @@ import { ChangeEvent, FormEvent, useCallback, useId, useState } from 'react';
 
 import { actor } from './canister/arcmindai';
 import { useChatHistory } from './useChatHistory';
+import { CenterSpinner } from './components/Spinner';
 
-import { ChatRole } from '@/declarations/arcmindai_controller/arcmindai_controller.did';
+import './page.css';
+import { AlertMessage } from './components/Alert';
 
 const initialInput = 'My name is Henry Chan. What is my first name?';
 
@@ -23,19 +25,13 @@ export default function Chat() {
       if (!input) return;
 
       try {
-        const updatedMessages = [
-          ...messages,
-          { role: { User: null }, content: input },
-        ];
-
-        mutate(updatedMessages, false);
         setInput('');
         await actor.insert_goal(input);
       } catch (err) {
         console.error('Error in submitting goal', err as Error);
       }
     },
-    [input, mutate, messages]
+    [input]
   );
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,28 +39,40 @@ export default function Chat() {
   };
 
   return (
-    <main className="mx-auto w-full h-screen max-w-[800px] p-24 flex flex-col">
-      <section className="mb-auto m">
-        {messages?.map((m, index) => (
-          <div className="mb-4" key={index}>
-            {'User' in m.role ? 'User: ' : 'ArcMind: '}
-            {m.content}
-          </div>
-        ))}
+    <main className="main">
+      <h1 className="title">ArcMind AI (alpha v0.1)</h1>
+      {isLoading && <CenterSpinner aria-label="Loading chat..." />}
+      {isError && (
+        <AlertMessage message="We have a problem loading your chat" />
+      )}
+
+      <section className="chat-container">
+        {messages?.map((m, index) => {
+          const isUser = 'User' in m.role;
+          const fromName: string = isUser ? 'User: ' : 'ArcMind: ';
+          return (
+            <div
+              className={isUser ? 'message-user' : 'message-arcmind'}
+              key={index}
+            >
+              {fromName}
+              {m.content}
+            </div>
+          );
+        })}
       </section>
-      <form className="flex space-x-4" onSubmit={submitGoal}>
-        <input
-          className="rounded-md p-2 text-black w-[740px]"
-          value={input}
-          onChange={handleInputChange}
-          placeholder="Say something..."
-        />
-        <button
-          className="border-solid border-2 border-white p-2 rounded-md"
-          type="submit"
-        >
-          Send
-        </button>
+      <form onSubmit={submitGoal}>
+        <div className="question-container">
+          <input
+            className="question"
+            value={input}
+            onChange={handleInputChange}
+            placeholder="Say something..."
+          />
+          <button className="send-btn" type="submit">
+            Send
+          </button>
+        </div>
       </form>
     </main>
   );
