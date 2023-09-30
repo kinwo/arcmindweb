@@ -40,7 +40,8 @@ export default function Chat() {
 
   return (
     <main className="main">
-      <h1 className="title">ArcMind AI (alpha v0.1)</h1>
+      <h1 className="title">ArcMind AI</h1>
+      <h1 className="subtitle">alpha v0.1</h1>
       {isLoading && <CenterSpinner aria-label="Loading chat..." />}
       {isError && (
         <AlertMessage message="We have a problem loading your chat" />
@@ -62,16 +63,18 @@ export default function Chat() {
         })}
       </section>
       <form onSubmit={submitGoal}>
-        <div className="question-container">
-          <input
-            className="question"
-            value={input}
-            onChange={handleInputChange}
-            placeholder="Say something..."
-          />
-          <button className="send-btn" type="submit">
-            Send
-          </button>
+        <div className="question-parant">
+          <div className="question-container">
+            <input
+              className="question"
+              value={input}
+              onChange={handleInputChange}
+              placeholder="Say something..."
+            />
+            <button className="send-btn" type="submit">
+              Send
+            </button>
+          </div>
         </div>
       </form>
     </main>

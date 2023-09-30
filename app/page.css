@@ -1,13 +1,17 @@
 .main {
-  @apply mx-auto w-full h-screen max-w-[800px] md:px-24 px-4 py-24 flex flex-col;
+  @apply container mx-auto flex flex-col pt-[60px];
 }
 
 .title {
-  @apply md:text-5xl text-3xl font-extrabold subpixel-antialiased pb-5 font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500;
+  @apply md:text-5xl text-4xl text-center font-extrabold subpixel-antialiased pb-10 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500;
+}
+
+.subtitle {
+  @apply absolute top-2 left-2 italic text-gray-400;
 }
 
 .chat-container {
-  @apply mb-auto pb-[200px];
+  @apply mb-auto pb-[200px] md:px-24 px-4;
 }
 
 .chat-container .message-user {
@@ -18,14 +22,18 @@
   @apply mb-4 text-slate-400;
 }
 
+.question-parant {
+  @apply fixed bottom-[80px] px-4 flex justify-center w-full left-0;
+}
+
 .question-container {
-  @apply flex p-4 bg-yellow-300 fixed md:left-auto bottom-[80px] md:mx-0 rounded-md md:w-[70%] w-[90%] max-w-[800px] shadow-lg;
+  @apply p-4 bg-yellow-300 rounded-md shadow-lg w-[100%] md:w-[80%] flex space-x-4;
 }
 
 .question-container .question {
-  @apply rounded-md p-2 text-gray-800 mr-auto w-[80%];
+  @apply rounded-md p-3 text-gray-800 flex-1;
 }
 
 .question-container .send-btn {
-  @apply border-solid border-2 border-white px-8 mx-4 rounded-md;
+  @apply border-solid border-2 border-white w-[120px] rounded-md py-2 flex-none;
 }
