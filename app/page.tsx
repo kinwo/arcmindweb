@@ -38,9 +38,24 @@ export default function Chat() {
     setInput(e.target.value);
   };
 
+  const startNewGoal = async () => {
+    try {
+      console.info('Starting new goal');
+      const result = await actor.start_new_goal();
+      console.info('New goal started', result);
+    } catch (err) {
+      console.error('Error in starting new goal', err as Error);
+    }
+  };
+
   return (
     <main className="main">
-      <h1 className="title">ArcMind AI</h1>
+      <div className="header">
+        <h1 className="title inline">ArcMind AI</h1>
+        <button className="new-btn" onClick={startNewGoal}>
+          New
+        </button>
+      </div>
       <h1 className="subtitle">alpha v0.1</h1>
       {isLoading && <CenterSpinner aria-label="Loading chat..." />}
       {isError && (
@@ -50,7 +65,12 @@ export default function Chat() {
       <section className="chat-container">
         {messages?.map((m, index) => {
           const isUser = 'User' in m.role;
-          const fromName: string = isUser ? 'User: ' : 'ArcMind: ';
+          const isSystem = 'System' in m.role;
+          const fromName: string = isUser
+            ? 'User: '
+            : isSystem
+            ? 'System: '
+            : 'ArcMind: ';
           return (
             <div
               className={isUser ? 'message-user' : 'message-arcmind'}

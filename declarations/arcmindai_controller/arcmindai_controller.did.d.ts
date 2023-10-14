@@ -20,12 +20,12 @@ export type GoalStatus = { 'Complete' : null } |
   { 'Scheduled' : null } |
   { 'Running' : null };
 export interface _SERVICE {
-  'ask' : ActorMethod<[string], string>,
   'get_brain_canister' : ActorMethod<[], [] | [Principal]>,
   'get_chathistory' : ActorMethod<[], Array<ChatHistory>>,
   'get_goal' : ActorMethod<[bigint], [] | [Goal]>,
   'get_owner' : ActorMethod<[], [] | [Principal]>,
+  'get_tools_canister' : ActorMethod<[], [] | [Principal]>,
   'insert_goal' : ActorMethod<[string], undefined>,
-  'save_result' : ActorMethod<[bigint, string], undefined>,
+  'start_new_goal' : ActorMethod<[], undefined>,
   'update_owner' : ActorMethod<[Principal], undefined>,
 }

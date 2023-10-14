@@ -2,6 +2,10 @@
   @apply container mx-auto flex flex-col pt-[60px];
 }
 
+.header {
+  @apply md:px-24 px-4 mb-3;
+}
+
 .title {
   @apply md:text-5xl text-4xl text-center font-extrabold subpixel-antialiased pb-10 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500;
 }
@@ -15,7 +19,7 @@
 }
 
 .chat-container .message-user {
-  @apply mb-4 text-sky-400;
+  @apply mb-4 text-pink-500;
 }
 
 .chat-container .message-arcmind {
@@ -27,7 +31,7 @@
 }
 
 .question-container {
-  @apply p-4 bg-yellow-300 rounded-md shadow-lg w-[100%] md:w-[80%] flex space-x-4;
+  @apply p-4 bg-purple-500 rounded-md shadow-lg w-[100%] md:w-[80%] flex space-x-4;
 }
 
 .question-container .question {
@@ -35,5 +39,9 @@
 }
 
 .question-container .send-btn {
-  @apply border-solid border-2 border-white w-[120px] rounded-md py-2 flex-none;
+  @apply border-solid border-2 border-white w-[120px] rounded-md py-2 flex-none text-white shadow-lg;
+}
+
+.new-btn {
+  @apply bg-purple-500 rounded-md shadow-lg float-right px-8 py-2 text-white;
 }
