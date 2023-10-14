@@ -40,9 +40,7 @@ export default function Chat() {
 
   const startNewGoal = async () => {
     try {
-      console.info('Starting new goal');
       const result = await actor.start_new_goal();
-      console.info('New goal started', result);
     } catch (err) {
       console.error('Error in starting new goal', err as Error);
     }
