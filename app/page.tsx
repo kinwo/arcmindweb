@@ -9,7 +9,7 @@ import { CenterSpinner } from './components/Spinner';
 import './page.css';
 import { AlertMessage } from './components/Alert';
 
-const initialInput = 'My name is Henry Chan. What is my first name?';
+const initialInput = 'What is the current weather in Brisbane?';
 
 export default function Chat() {
   // Generate a unique id for the chat if not provided.
@@ -26,7 +26,7 @@ export default function Chat() {
 
       try {
         setInput('');
-        await actor.insert_goal(input);
+        await actor.start_new_goal(input);
       } catch (err) {
         console.error('Error in submitting goal', err as Error);
       }
@@ -38,11 +38,20 @@ export default function Chat() {
     setInput(e.target.value);
   };
 
-  const startNewGoal = async () => {
+  const togglePauseCOF = async () => {
     try {
-      const result = await actor.start_new_goal();
+      const result = await actor.toggle_pause_cof();
+      console.log('Pause Chain of thoughts', { result });
     } catch (err) {
-      console.error('Error in starting new goal', err as Error);
+      console.error('Error in pausing Chain of thoughts', err as Error);
+    }
+  };
+
+  const clearAllGoals = async () => {
+    try {
+      await actor.clear_all_goals();
+    } catch (err) {
+      console.error('Error in clearing all goals', err as Error);
     }
   };
 
@@ -50,8 +59,11 @@ export default function Chat() {
     <main className="main">
       <div className="header">
         <h1 className="title inline">ArcMind AI</h1>
-        <button className="new-btn" onClick={startNewGoal}>
-          New
+        <button className="new-btn ml-2" onClick={togglePauseCOF}>
+          Toggle Pause
+        </button>
+        <button className="new-btn" onClick={clearAllGoals}>
+          Clear
         </button>
       </div>
       <h1 className="subtitle">alpha v0.1</h1>

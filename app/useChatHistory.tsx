@@ -2,7 +2,7 @@ import useSWR, { Key, KeyedMutator } from 'swr';
 import { actor } from './canister/arcmindai';
 import { ChatHistory } from '@/declarations/arcmindai_controller/arcmindai_controller.did';
 
-const AutoRefreshSecs = 5;
+const AutoRefreshSecs = 2;
 
 const fetcher = async (id: string): Promise<ChatHistory[]> => {
   try {

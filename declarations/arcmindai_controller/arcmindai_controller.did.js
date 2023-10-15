@@ -22,13 +22,15 @@ export const idlFactory = ({ IDL }) => {
     'created_at' : IDL.Nat64,
   });
   return IDL.Service({
+    'clear_all_goals' : IDL.Func([], [], []),
     'get_brain_canister' : IDL.Func([], [IDL.Opt(IDL.Principal)], ['query']),
     'get_chathistory' : IDL.Func([], [IDL.Vec(ChatHistory)], ['query']),
     'get_goal' : IDL.Func([IDL.Nat64], [IDL.Opt(Goal)], ['query']),
     'get_owner' : IDL.Func([], [IDL.Opt(IDL.Principal)], ['query']),
     'get_tools_canister' : IDL.Func([], [IDL.Opt(IDL.Principal)], ['query']),
     'insert_goal' : IDL.Func([IDL.Text], [], []),
-    'start_new_goal' : IDL.Func([], [], []),
+    'start_new_goal' : IDL.Func([IDL.Text], [], []),
+    'toggle_pause_cof' : IDL.Func([], [], []),
     'update_owner' : IDL.Func([IDL.Principal], [], []),
   });
 };
