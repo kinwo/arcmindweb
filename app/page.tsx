@@ -59,8 +59,11 @@ export default function Chat() {
     <main className="main">
       <div className="header">
         <h1 className="title inline">ArcMind AI</h1>
-        <button className="new-btn ml-2" onClick={togglePauseCOF}>
-          Toggle Pause
+        <button
+          className="new-btn ml-2 hidden md:block"
+          onClick={togglePauseCOF}
+        >
+          Pause / Unpause
         </button>
         <button className="new-btn" onClick={clearAllGoals}>
           Clear
