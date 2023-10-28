@@ -9,7 +9,7 @@ import { CenterSpinner } from './components/Spinner';
 import './page.css';
 import { AlertMessage } from './components/Alert';
 
-const initialInput = 'What is the current weather in Brisbane?';
+const initialInput = 'What is the current weather in Gold Coast?';
 
 export default function Chat() {
   // Generate a unique id for the chat if not provided.
