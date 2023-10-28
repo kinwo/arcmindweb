@@ -69,7 +69,7 @@ export default function Chat() {
           Clear
         </button>
       </div>
-      <h1 className="subtitle">alpha v0.1</h1>
+      <h1 className="subtitle">alpha v0.2</h1>
       {isLoading && <CenterSpinner aria-label="Loading chat..." />}
       {isError && (
         <AlertMessage message="We have a problem loading your chat" />
