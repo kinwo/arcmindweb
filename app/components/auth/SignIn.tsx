@@ -1,0 +1,55 @@
+import React, { useEffect, useState } from 'react';
+
+import { createNFIDLogin } from '@/app/auth/provider/nfid';
+import { AuthProvider } from '@/app/config';
+import { Button, Toast } from 'flowbite-react';
+import { log } from '@/app/util/log';
+
+export const SignIn = ({}) => {
+  const initLoading = 1;
+  const [showToast, setShowToast] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const showMainApp = () => {
+    log.info('showMainApp');
+  };
+
+  const selectAuth = async (authProvider: AuthProvider) => {
+    switch (authProvider) {
+      case AuthProvider.NFID: {
+        const authLogin = createNFIDLogin(handleAuthUpdate, authProvider);
+        await authLogin();
+        break;
+      }
+    }
+  };
+
+  const handleAuthUpdate = (identity: any, authProvider: AuthProvider) => {
+    if (identity == null) {
+      setMessage('We have a problem signing in. Please try again later.');
+      setShowToast(true);
+      return;
+    }
+
+    log.info('handleAuthUpdate', { identity, authProvider });
+
+    showMainApp();
+  };
+
+  return (
+    <div className="flex justify-center">
+      <Button
+        gradientDuoTone="purpleToBlue"
+        className="text-xl w-[200px]"
+        onClick={() => selectAuth(AuthProvider.NFID)}
+      >
+        Sign In
+      </Button>
+      {message && (
+        <Toast>
+          <div className="ml-3 text-sm font-normal">{message}</div>
+        </Toast>
+      )}
+    </div>
+  );
+};
