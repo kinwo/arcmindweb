@@ -31,7 +31,7 @@ export const SignIn = ({}) => {
       return;
     }
 
-    console.info('handleAuthUpdate', { identity, authProvider });
+    log.info('handleAuthUpdate', { identity, authProvider });
 
     showMainApp();
   };

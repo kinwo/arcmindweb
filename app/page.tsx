@@ -13,7 +13,7 @@ import { SignInScreen } from './screen/SignInScreen';
 import { ChatScreen } from './screen/ChatScreen';
 import { EmptyScreen } from './screen/EmptyScreen';
 
-export const ArcMindApp = () => {
+export default function Page() {
   const [render, setRender] = useState(false);
   useEffect(() => setRender(true), []);
 
@@ -32,6 +32,4 @@ export const ArcMindApp = () => {
   );
 
   return render ? <RouterProvider router={router} /> : null;
-};
-
-export default ArcMindApp;
+}
