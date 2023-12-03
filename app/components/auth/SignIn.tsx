@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { createNFIDLogin } from '@/app/auth/provider/nfid';
 import { AuthProvider } from '@/app/config';
 import { Button, Toast } from 'flowbite-react';
 import { log } from '@/app/util/log';
+import { AuthClient } from '@dfinity/auth-client';
+import { useAuthClient } from './useAuthClient';
 
 export const SignIn = ({}) => {
-  const initLoading = 1;
   const [showToast, setShowToast] = useState(false);
   const [message, setMessage] = useState('');
+  const { authClient } = useAuthClient();
 
   const showMainApp = () => {
     log.info('showMainApp');
@@ -17,7 +19,13 @@ export const SignIn = ({}) => {
   const selectAuth = async (authProvider: AuthProvider) => {
     switch (authProvider) {
       case AuthProvider.NFID: {
-        const authLogin = createNFIDLogin(handleAuthUpdate, authProvider);
+        if (authClient == null) break;
+
+        const authLogin = createNFIDLogin(
+          authClient,
+          handleAuthUpdate,
+          authProvider
+        );
         await authLogin();
         break;
       }
@@ -45,7 +53,7 @@ export const SignIn = ({}) => {
       >
         Sign In
       </Button>
-      {message && (
+      {showToast && (
         <Toast>
           <div className="ml-3 text-sm font-normal">{message}</div>
         </Toast>

@@ -20,17 +20,11 @@ const NFID_AUTH_PATH =
 const NFID_AUTH_PROVIDER_URL = NFID_ORIGIN + NFID_AUTH_PATH;
 
 export function createNFIDLogin(
+  authClient: AuthClient,
   handleAuthenticated: any,
   authProvider: AuthProvider
 ) {
   return async () => {
-    const authClient = await AuthClient.create({
-      idleOptions: {
-        disableIdle: true,
-        disableDefaultIdleCallback: true,
-      },
-    });
-
     const isAuthenticated = await authClient.isAuthenticated();
     if (isAuthenticated) {
       const identity = await authClient.getIdentity();
