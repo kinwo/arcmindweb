@@ -10,8 +10,8 @@ import {
 } from 'react-router-dom';
 import { PageSkeleton } from './screen/PageSkeleton';
 import { SignInScreen } from './screen/SignInScreen';
-import { ChatScreen } from './screen/ChatScreen';
 import { EmptyScreen } from './screen/EmptyScreen';
+import ChatScreen from './screen/ChatScreen';
 
 export default function Page() {
   const [render, setRender] = useState(false);
@@ -25,7 +25,7 @@ export default function Page() {
         <Route path="/" element={<SignInScreen />} />
         <Route path="/signin" element={<SignInScreen />} />
         <Route path="/index.html" element={<SignInScreen />} />
-        <Route path="/ai" element={<ChatScreen />} />
+        <Route path="/ai/:controllerId" element={<ChatScreen />} />
         <Route path="*" element={<EmptyScreen />} />
       </Route>
     )
