@@ -32,14 +32,17 @@ export const SignIn = ({ triggerAuth }: Props) => {
     }
   };
 
-  const handleAuthUpdate = (identity: any, authProvider: AuthProvider) => {
+  const handleAuthUpdate = async (
+    identity: any,
+    authProvider: AuthProvider
+  ) => {
     if (identity == null) {
       setMessage('We have a problem signing in. Please try again later.');
       setShowToast(true);
       return;
     }
 
-    if (triggerAuth) triggerAuth(identity);
+    if (triggerAuth) await triggerAuth(identity);
   };
 
   return (

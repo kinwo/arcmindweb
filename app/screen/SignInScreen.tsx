@@ -3,17 +3,23 @@
 import Head from 'next/head';
 
 import './SignInScreen.css';
+
 import { SignIn } from '../components/auth/SignIn';
 import { useNavigate } from 'react-router-dom';
 import { Identity } from '@dfinity/agent';
-import { UserControllerMap } from '../config';
+import { log } from '../util/log';
+import { queryUserController } from '../client/user';
 
 export const SignInScreen = () => {
   const navigate = useNavigate();
 
-  const triggerAuth = (identity: Identity) => {
-    const principalId = identity.getPrincipal().toString();
-    const controllerId = UserControllerMap[principalId];
+  const triggerAuth = async (identity: Identity) => {
+    const controllerId = await queryUserController(identity);
+
+    if (controllerId === null) {
+      log.warn('No controller found');
+      return;
+    }
 
     navigate(`/ai/${controllerId}`);
   };
