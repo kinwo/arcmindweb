@@ -1,38 +1,63 @@
 'use client';
 
-import { ChangeEvent, FormEvent, useCallback, useId, useState } from 'react';
+import {
+  ChangeEvent,
+  FormEvent,
+  useCallback,
+  useEffect,
+  useId,
+  useState,
+} from 'react';
 
-import { actor } from '../canister/arcmindai';
-import { useChatHistory } from '../useChatHistory';
+import { createControllerActor } from '../canister/arcmindai';
+import { useChatHistory } from '../components/chat/useChatHistory';
 import { CenterSpinner } from '../components/Spinner';
 
 import './ChatScreen.css';
 import { AlertMessage } from '../components/Alert';
 import { log } from '../util/log';
+import { Identity } from '@dfinity/agent';
+import { authProtect } from '../components/auth/authProtect';
+import { useParams } from 'react-router-dom';
 
-const initialInput = 'What is the current weather in Gold Coast?';
+const initialInput = '';
 
-export const ChatScreen = () => {
+type Props = {
+  identity: Identity;
+  signout: () => void;
+};
+
+const ChatScreen = ({ identity, signout }: Props) => {
   // Generate a unique id for the chat if not provided.
   const hookId = useId();
   const chatId = hookId;
 
-  const { messages, mutate, isLoading, isError } = useChatHistory(chatId);
+  const { controllerId } = useParams();
+
+  const myControllerId = controllerId || '';
+
+  const { messages, isLoading, isError } = useChatHistory(
+    chatId,
+    identity,
+    myControllerId
+  );
   const [input, setInput] = useState<string>(initialInput);
 
   const submitGoal = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      if (!input) return;
+      if (!input || !identity) return;
 
       try {
         setInput('');
-        await actor.start_new_goal(input);
+        await createControllerActor(identity, myControllerId).start_new_goal(
+          input
+        );
       } catch (err) {
         log.error('Error in submitting goal', err as Error);
       }
     },
-    [input]
+    [input, identity, myControllerId]
   );
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -40,8 +65,13 @@ export const ChatScreen = () => {
   };
 
   const togglePauseCOF = async () => {
+    if (!identity) return;
+
     try {
-      const result = await actor.toggle_pause_cof();
+      const result = await createControllerActor(
+        identity,
+        myControllerId
+      ).toggle_pause_cof();
       log.info('Pause Chain of thoughts', { result });
     } catch (err) {
       log.error('Error in pausing Chain of thoughts', err as Error);
@@ -49,10 +79,20 @@ export const ChatScreen = () => {
   };
 
   const clearAllGoals = async () => {
+    if (!identity) return;
+
     try {
-      await actor.clear_all_goals();
+      await createControllerActor(identity, myControllerId).clear_all_goals();
     } catch (err) {
       log.error('Error in clearing all goals', err as Error);
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await signout();
+    } catch (err) {
+      log.error('Error in logging out', err as Error);
     }
   };
 
@@ -60,6 +100,10 @@ export const ChatScreen = () => {
     <>
       <div className="header">
         <h1 className="title inline">ArcMind AI</h1>
+
+        <button className="new-btn ml-2 hidden md:block" onClick={logout}>
+          Logout
+        </button>
         <button
           className="new-btn ml-2 hidden md:block"
           onClick={togglePauseCOF}
@@ -114,3 +158,5 @@ export const ChatScreen = () => {
     </>
   );
 };
+
+export default authProtect(ChatScreen);

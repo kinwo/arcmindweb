@@ -16,3 +16,9 @@ export const AuthConfig = {
 export const SWRKey = {
   Chat: '/api/chathistory/',
 };
+
+// Temporary map of user principals to controller canister ids
+export const UserControllerMap: Record<string, string> = {
+  'og5ck-wstph-2m7s5-enjzf-7heh5-ko754-eoaj4-n2ccx-imtiu-s4ieb-4ae':
+    'b77ix-eeaaa-aaaaa-qaada-cai',
+};

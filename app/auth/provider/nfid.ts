@@ -70,10 +70,3 @@ export async function checkIIUserAuth() {
 
   return null;
 }
-
-const NFID_RE_TRANSFER_APP_META = `applicationName=${NFID_APPLICATION_NAME}&applicationLogo=${NFID_APPLICATION_LOGO_URL}`;
-const NFID_REQ_TRANSFER = 'wallet/request-transfer';
-
-const REQ_TRANSFER_PROVIDER_URL = new URL(
-  `${NFID_ORIGIN}/${NFID_REQ_TRANSFER}?${NFID_RE_TRANSFER_APP_META}`
-);

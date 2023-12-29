@@ -1,20 +1,20 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { createNFIDLogin } from '@/app/auth/provider/nfid';
 import { AuthProvider } from '@/app/config';
 import { Button, Toast } from 'flowbite-react';
 import { log } from '@/app/util/log';
-import { AuthClient } from '@dfinity/auth-client';
 import { useAuthClient } from './useAuthClient';
+import { Identity } from '@dfinity/agent';
 
-export const SignIn = ({}) => {
+type Props = {
+  triggerAuth?: (identity: Identity) => void;
+};
+
+export const SignIn = ({ triggerAuth }: Props) => {
   const [showToast, setShowToast] = useState(false);
   const [message, setMessage] = useState('');
   const { authClient } = useAuthClient();
-
-  const showMainApp = () => {
-    log.info('showMainApp');
-  };
 
   const selectAuth = async (authProvider: AuthProvider) => {
     switch (authProvider) {
@@ -32,16 +32,17 @@ export const SignIn = ({}) => {
     }
   };
 
-  const handleAuthUpdate = (identity: any, authProvider: AuthProvider) => {
+  const handleAuthUpdate = async (
+    identity: any,
+    authProvider: AuthProvider
+  ) => {
     if (identity == null) {
       setMessage('We have a problem signing in. Please try again later.');
       setShowToast(true);
       return;
     }
 
-    log.info('handleAuthUpdate', { identity, authProvider });
-
-    showMainApp();
+    if (triggerAuth) await triggerAuth(identity);
   };
 
   return (
