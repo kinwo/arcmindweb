@@ -1,0 +1,11 @@
+.header {
+  @apply py-3 px-4 flex justify-between items-center;
+}
+
+.title {
+  @apply md:text-5xl text-4xl mx-auto font-extrabold subpixel-antialiased pb-2 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500;
+}
+
+.subtitle {
+  @apply absolute top-2 left-2 italic text-gray-400;
+}

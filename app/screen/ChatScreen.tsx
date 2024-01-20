@@ -99,8 +99,6 @@ const ChatScreen = ({ identity, signout }: Props) => {
   return (
     <>
       <div className="header">
-        <h1 className="title inline">ArcMind AI</h1>
-
         <button className="new-btn ml-2 hidden md:block" onClick={logout}>
           Logout
         </button>
@@ -127,8 +125,8 @@ const ChatScreen = ({ identity, signout }: Props) => {
           const fromName: string = isUser
             ? 'User: '
             : isSystem
-            ? 'System: '
-            : 'ArcMind: ';
+              ? 'System: '
+              : 'ArcMind: ';
           return (
             <div
               className={isUser ? 'message-user' : 'message-arcmind'}

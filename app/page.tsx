@@ -9,9 +9,10 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import { PageSkeleton } from './screen/PageSkeleton';
-import { SignInScreen } from './screen/SignInScreen';
+import { HomeScreen } from './screen/HomeScreen';
 import { EmptyScreen } from './screen/EmptyScreen';
 import ChatScreen from './screen/ChatScreen';
+import { SignUpScreen } from './screen/SignUpScreen';
 
 export default function Page() {
   const [render, setRender] = useState(false);
@@ -22,9 +23,10 @@ export default function Page() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<PageSkeleton />}>
-        <Route path="/" element={<SignInScreen />} />
-        <Route path="/signin" element={<SignInScreen />} />
-        <Route path="/index.html" element={<SignInScreen />} />
+        <Route path="/" element={<HomeScreen />} />
+        <Route path="/index.html" element={<HomeScreen />} />
+        <Route path="/signup" element={<SignUpScreen />} />
+        <Route path="/signin" element={<HomeScreen />} />
         <Route path="/ai/:controllerId" element={<ChatScreen />} />
         <Route path="*" element={<EmptyScreen />} />
       </Route>

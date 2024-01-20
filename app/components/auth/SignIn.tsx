@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { createNFIDLogin } from '@/app/auth/provider/nfid';
 import { AuthProvider } from '@/app/config';
 import { Button, Toast } from 'flowbite-react';
-import { log } from '@/app/util/log';
 import { useAuthClient } from './useAuthClient';
 import { Identity } from '@dfinity/agent';
 
@@ -48,7 +47,8 @@ export const SignIn = ({ triggerAuth }: Props) => {
   return (
     <div className="flex justify-center">
       <Button
-        gradientDuoTone="purpleToBlue"
+        gradientMonochrome="pink"
+        outline
         className="text-xl w-[200px]"
         onClick={() => selectAuth(AuthProvider.NFID)}
       >

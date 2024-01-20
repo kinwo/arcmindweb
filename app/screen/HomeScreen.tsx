@@ -2,15 +2,16 @@
 
 import Head from 'next/head';
 
-import './SignInScreen.css';
+import style from './HomeScreen.module.css';
 
 import { SignIn } from '../components/auth/SignIn';
 import { useNavigate } from 'react-router-dom';
 import { Identity } from '@dfinity/agent';
 import { log } from '../util/log';
 import { queryUserController } from '../client/user';
+import { Button } from 'flowbite-react';
 
-export const SignInScreen = () => {
+export const HomeScreen = () => {
   const navigate = useNavigate();
 
   const triggerAuth = async (identity: Identity) => {
@@ -24,12 +25,29 @@ export const SignInScreen = () => {
     navigate(`/ai/${controllerId}`);
   };
 
+  const navigateToSignUp = () => {
+    navigate('/signup');
+  };
+
   return (
-    <section className="signin-container">
+    <section className={style.signinContainer}>
       <Head>
-        <title>Sign In - ArcMindAi</title>
+        <title>Home - ArcMindAI</title>
       </Head>
-      <h1 className="text-xl">Sign In Screen</h1>
+
+      <section>
+        <h2 className="text-xl font-semibold text-slate-600">
+          Supercharge your AI workforce
+        </h2>
+      </section>
+
+      <Button
+        gradientDuoTone="purpleToPink"
+        className="text-xl w-[200px]"
+        onClick={() => navigateToSignUp()}
+      >
+        Sign Up
+      </Button>
 
       <SignIn triggerAuth={triggerAuth} />
     </section>
