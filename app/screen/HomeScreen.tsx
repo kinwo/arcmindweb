@@ -10,9 +10,12 @@ import { Identity } from '@dfinity/agent';
 import { log } from '../util/log';
 import { queryUserController } from '../client/user';
 import { Button } from 'flowbite-react';
+import { useContext } from 'react';
+import { AuthContext } from '../components/context/AuthContext';
 
 export const HomeScreen = () => {
   const navigate = useNavigate();
+  const { setControllerId } = useContext(AuthContext);
 
   const triggerAuth = async (identity: Identity) => {
     const controllerId = await queryUserController(identity);
@@ -22,6 +25,7 @@ export const HomeScreen = () => {
       return;
     }
 
+    setControllerId(controllerId);
     navigate(`/ai/${controllerId}`);
   };
 

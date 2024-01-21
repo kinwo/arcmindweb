@@ -14,4 +14,8 @@ export const AuthContext = createContext<AuthClientHook>({
   triggerAuthCheck: function (): void {
     throw new Error('Function not implemented.');
   },
+  controllerId: null,
+  setControllerId: function (value: React.SetStateAction<string | null>): void {
+    throw new Error('Function not implemented.');
+  },
 });

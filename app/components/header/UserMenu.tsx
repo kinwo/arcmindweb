@@ -1,22 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Button, Dropdown } from 'flowbite-react';
 import {
   HiCurrencyDollar,
   HiLogin,
   HiLogout,
+  HiOutlineChat,
   HiOutlineMenu,
   HiOutlineTrendingUp,
 } from 'react-icons/hi';
 
 import style from './Menu.module.css';
-import { useAuthClient } from '../auth/useAuthClient';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 type UserMenuProps = {
   signout: () => void;
 };
 
 export const UserMenu = ({ signout }: UserMenuProps) => {
+  const navigate = useNavigate();
+  const { controllerId } = useContext(AuthContext);
+
   return (
     <Dropdown
       label="Menu"
@@ -27,10 +32,25 @@ export const UserMenu = ({ signout }: UserMenuProps) => {
         </Button>
       )}
     >
-      <Dropdown.Item icon={HiOutlineTrendingUp} className={style.menuItem}>
+      <Dropdown.Item
+        icon={HiOutlineChat}
+        className={style.menuItem}
+        onClick={() => navigate(`/ai/${controllerId}`)}
+      >
+        ArcMind
+      </Dropdown.Item>
+      <Dropdown.Item
+        icon={HiOutlineTrendingUp}
+        className={style.menuItem}
+        onClick={() => navigate('/usage')}
+      >
         Usage
       </Dropdown.Item>
-      <Dropdown.Item icon={HiCurrencyDollar} className={style.menuItem}>
+      <Dropdown.Item
+        icon={HiCurrencyDollar}
+        className={style.menuItem}
+        onClick={() => navigate('/myplan')}
+      >
         My Plan
       </Dropdown.Item>
       <Dropdown.Item

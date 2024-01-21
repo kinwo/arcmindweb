@@ -13,6 +13,8 @@ import { HomeScreen } from './screen/HomeScreen';
 import { EmptyScreen } from './screen/EmptyScreen';
 import ChatScreen from './screen/ChatScreen';
 import { SignUpScreen } from './screen/SignUpScreen';
+import { UsageScreen } from './screen/UsageScreen';
+import { MyPlanScreen } from './screen/MyPlanScreen';
 
 export default function Page() {
   const [render, setRender] = useState(false);
@@ -27,6 +29,8 @@ export default function Page() {
         <Route path="/index.html" element={<HomeScreen />} />
         <Route path="/signup" element={<SignUpScreen />} />
         <Route path="/signin" element={<HomeScreen />} />
+        <Route path="/usage" element={<UsageScreen />} />
+        <Route path="/myplan" element={<MyPlanScreen />} />
         <Route path="/ai/:controllerId" element={<ChatScreen />} />
         <Route path="*" element={<EmptyScreen />} />
       </Route>

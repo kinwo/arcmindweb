@@ -10,6 +10,8 @@ export type AuthClientHook = {
   signout: () => void;
   triggerAuth: () => void;
   triggerAuthCheck: () => void;
+  controllerId: string | null;
+  setControllerId: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 export const useAuthClient = (): AuthClientHook => {
@@ -18,6 +20,7 @@ export const useAuthClient = (): AuthClientHook => {
   const [identity, setIdentity] = useState<Identity | null>(null);
   const [numUpdates, setNumUpdates] = useState(0);
   const [numAuthCheckUpdates, setNumAuthCheckUpdates] = useState(0);
+  const [controllerId, setControllerId] = useState<string | null>(null);
 
   const navigae = useNavigate();
 
@@ -87,5 +90,7 @@ export const useAuthClient = (): AuthClientHook => {
     signout,
     triggerAuth,
     triggerAuthCheck,
+    controllerId,
+    setControllerId,
   };
 };
