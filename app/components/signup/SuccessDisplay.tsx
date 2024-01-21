@@ -15,8 +15,8 @@ export const SuccessDisplay = ({ sessionId }: SuccessDisplayProps) => {
       <form action="/create-portal-session" method="POST">
         <input
           type="hidden"
-          id="session-id"
-          name="session_id"
+          id="sessionId"
+          name="sessionId"
           value={sessionId}
         />
         <button id="checkout-and-portal-button" type="submit">

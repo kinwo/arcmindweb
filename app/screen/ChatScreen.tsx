@@ -19,6 +19,7 @@ import { log } from '../util/log';
 import { Identity } from '@dfinity/agent';
 import { authProtect } from '../components/auth/authProtect';
 import { useParams } from 'react-router-dom';
+import { AuthClientHook } from '../components/auth/useAuthClient';
 
 const initialInput = '';
 
@@ -88,20 +89,9 @@ const ChatScreen = ({ identity, signout }: Props) => {
     }
   };
 
-  const logout = async () => {
-    try {
-      await signout();
-    } catch (err) {
-      log.error('Error in logging out', err as Error);
-    }
-  };
-
   return (
     <>
       <div className="header">
-        <button className="new-btn ml-2 hidden md:block" onClick={logout}>
-          Logout
-        </button>
         <button
           className="new-btn ml-2 hidden md:block"
           onClick={togglePauseCOF}

@@ -46,8 +46,8 @@ export const ProductDisplay = () => (
   <section>
     <form action="/create-checkout-session" method="POST">
       <PricingCard title="Starter" price={5} />
-      {/* Add a hidden field with the lookup_key of your Price */}
-      <input type="hidden" name="lookup_key" value="{{PRICE_LOOKUP_KEY}}" />
+      {/* Add a hidden field with the lookupKey of your Price */}
+      <input type="hidden" name="lookupKey" value="{{PRICE_LOOKUP_KEY}}" />
     </form>
   </section>
 );

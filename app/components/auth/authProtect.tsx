@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 
-import { useAuthClient } from './useAuthClient';
+import { AuthClientHook, useAuthClient } from './useAuthClient';
 import { SignIn } from './SignIn';
 import { log } from '@/app/util/log';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export const authProtect = (Component: any) => (props: any) => {
   return protect(Component)(props);
@@ -10,13 +12,21 @@ export const authProtect = (Component: any) => (props: any) => {
 
 const protect = (Component: any) => {
   const AuthProtectedComponent = (props: any) => {
-    const { isAuthenticated, identity, signout, triggerAuth } = useAuthClient();
+    const { isAuthenticated, identity, signout, triggerAuthCheck } =
+      useContext(AuthContext);
 
-    return isAuthenticated ? (
-      <Component identity={identity} signout={signout} {...props} />
-    ) : (
-      <SignIn {...props} triggerAuth={triggerAuth} />
-    );
+    const initUpdate = 0;
+
+    useEffect(() => {
+      triggerAuthCheck();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [initUpdate]);
+
+    if (!isAuthenticated) {
+      return <></>;
+    }
+
+    return <Component identity={identity} signout={signout} {...props} />;
   };
 
   AuthProtectedComponent.displayName = `AuthProtected(${

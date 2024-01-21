@@ -9,3 +9,7 @@
 .subtitle {
   @apply absolute top-2 left-2 italic text-gray-400;
 }
+
+.menu {
+  @apply absolute top-6 right-1 w-[116px];
+}

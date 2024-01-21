@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { createNFIDLogin } from '@/app/auth/provider/nfid';
 import { AuthProvider } from '@/app/config';
 import { Button, Toast } from 'flowbite-react';
-import { useAuthClient } from './useAuthClient';
 import { Identity } from '@dfinity/agent';
+import { AuthContext } from '../context/AuthContext';
 
 type Props = {
   triggerAuth?: (identity: Identity) => void;
@@ -13,7 +13,7 @@ type Props = {
 export const SignIn = ({ triggerAuth }: Props) => {
   const [showToast, setShowToast] = useState(false);
   const [message, setMessage] = useState('');
-  const { authClient } = useAuthClient();
+  const { authClient } = useContext(AuthContext);
 
   const selectAuth = async (authProvider: AuthProvider) => {
     switch (authProvider) {
