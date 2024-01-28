@@ -1,3 +1,24 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["next/core-web-vitals", "plugin:react/recommended", "standard"],
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "plugins": ["react", "@typescript-eslint"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "space-before-function-paren": "off",
+    "generator-star-spacing": "off",
+    "multiline-ternary": "off",
+    // eslint recommends using a formatter instead https://typescript-eslint.io/rules/comma-dangle/
+    "comma-dangle": "off",
+    "react/prop-types": "off",
+    "indent": "off"
+  }
 }
