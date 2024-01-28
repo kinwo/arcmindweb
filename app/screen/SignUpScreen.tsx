@@ -41,7 +41,7 @@ export const SignUpScreen = () => {
 
     if (query.get('canceled')) {
       setSuccess(false)
-      setMessage("Order canceled -- continue to shop around and checkout when you're ready.")
+      setMessage('Order canceled')
     }
   }, [sessionId])
 

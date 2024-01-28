@@ -11,5 +11,5 @@
 }
 
 .menu {
-  @apply absolute top-6 right-1 w-[116px];
+  @apply absolute top-6 right-0 w-[70px] md:w-[116px];
 }
