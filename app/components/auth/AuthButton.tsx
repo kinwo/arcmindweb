@@ -18,7 +18,7 @@ export const AuthButton = () => {
         try {
           setLoading(true)
           const controllerId = await queryUserController(identity)
-          navigate(`/ai/${controllerId}`)
+          if (controllerId) navigate(`/ai/${controllerId}`)
         } catch (error) {
           log.error('Error in loadControllerId', error as Error)
         } finally {
