@@ -13,7 +13,7 @@ export const AuthButton = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && identity) {
       const loadControllerId = async () => {
         try {
           setLoading(true)

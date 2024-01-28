@@ -1,22 +1,21 @@
+import { createFBFuncURL } from '@/app/url'
 import React from 'react'
+import { useInternetIdentity } from '../auth/InternetIdentity'
+import { Button } from '../library/Button'
 
-type ManageSubscriptionProps = {
-  customerId: string
-}
+export const ManageSubscription = () => {
+  const { identity } = useInternetIdentity()
+  const ownerPrincipalId = identity?.getPrincipal().toString() ?? ''
 
-export const ManageSubscription = ({ customerId }: ManageSubscriptionProps) => {
+  const createPortalURL = createFBFuncURL('/stripecreateportalsession')
+
   return (
-    <section>
-      <div className='product Box-root'>
-        <div className='description Box-root'>
-          <h3>ArcMind AI Subscription</h3>
-        </div>
-      </div>
-      <form action='/create-portal-session' method='POST'>
-        <input type='hidden' id='customerId' name='customerId' value={customerId} />
-        <button id='portal-button' type='submit'>
+    <section className='flex flex-col gap-6'>
+      <form action={createPortalURL} method='POST' className='mx-auto'>
+        <input type='hidden' id='customerId' name='customerId' value={ownerPrincipalId} />
+        <Button id='portal-button' type='submit'>
           Manage your subscription
-        </button>
+        </Button>
       </form>
     </section>
   )

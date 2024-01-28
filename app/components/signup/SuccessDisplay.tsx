@@ -1,10 +1,14 @@
+import { createFBFuncURL } from '@/app/url'
 import React from 'react'
+import { Button } from '../library/Button'
 
 type SuccessDisplayProps = {
   sessionId: string
 }
 
 export const SuccessDisplay = ({ sessionId }: SuccessDisplayProps) => {
+  const createPortalURL = createFBFuncURL('/stripecreateportalsession')
+
   return (
     <section>
       <div className='product Box-root'>
@@ -12,11 +16,12 @@ export const SuccessDisplay = ({ sessionId }: SuccessDisplayProps) => {
           <h3>Subscription to ArcMind AI Starter plan successful!</h3>
         </div>
       </div>
-      <form action='/create-portal-session' method='POST'>
+
+      <form action={createPortalURL} method='POST'>
         <input type='hidden' id='sessionId' name='sessionId' value={sessionId} />
-        <button id='checkout-and-portal-button' type='submit'>
+        <Button id='portal-button' type='submit'>
           Manage your billing information
-        </button>
+        </Button>
       </form>
     </section>
   )

@@ -20,8 +20,10 @@ export const UserMenu = ({ signout }: UserMenuProps) => {
 
   useEffect(() => {
     const query = async () => {
-      const result = await queryUserController(identity)
-      setControllerId(result)
+      if (identity) {
+        const result = await queryUserController(identity)
+        setControllerId(result)
+      }
     }
 
     query()

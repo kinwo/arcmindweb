@@ -13,7 +13,7 @@ interface InternetIdentityContextState {
   isAuthenticated: boolean
   identity: Identity | null
   authenticate: () => Promise<void>
-  signout: () => void
+  signout: () => Promise<void>
 }
 
 export const InternetIdentityContext = React.createContext<InternetIdentityContextState>({
@@ -23,7 +23,7 @@ export const InternetIdentityContext = React.createContext<InternetIdentityConte
   isAuthenticated: false,
   identity: null,
   authenticate: () => new Promise(() => null),
-  signout: () => null,
+  signout: () => new Promise(() => null),
 })
 
 interface AuthClientOptions extends Omit<AuthClientLoginOptions, 'onSuccess'> {
@@ -126,6 +126,6 @@ export const InternetIdentityProvider: React.FC<InternetIdentityProviderProps> =
   return <InternetIdentityContext.Provider value={authContext}>{children}</InternetIdentityContext.Provider>
 }
 
-export const useInternetIdentity: () => any = () => {
-  return useContext(InternetIdentityContext)
+export const useInternetIdentity: () => InternetIdentityContextState = () => {
+  return useContext<InternetIdentityContextState>(InternetIdentityContext)
 }

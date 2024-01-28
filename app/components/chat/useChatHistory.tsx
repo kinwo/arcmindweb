@@ -8,9 +8,11 @@ import { Identity } from '@dfinity/agent'
 const AutoRefreshSecs = 2
 
 const fetcher =
-  (identity: Identity, controllerId: string) =>
+  (identity: Identity | null, controllerId: string) =>
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async (id: string): Promise<ChatHistory[]> => {
+    if (identity === null) return []
+
     try {
       const messages = await createControllerActor(identity, controllerId).get_chathistory()
       return messages
@@ -27,7 +29,7 @@ type Response = {
   isError: boolean
 }
 
-export const useChatHistory = (id: string, identity: Identity, controllerId: string): Response => {
+export const useChatHistory = (id: string, identity: Identity | null, controllerId: string): Response => {
   const { data, error, isLoading, mutate } = useSWR(`${SWRKey.Chat}${id}`, fetcher(identity, controllerId), {
     refreshInterval: 1000 * AutoRefreshSecs,
   })

@@ -21,12 +21,12 @@ const MyCard = ({ title, metric }: MyCardProps) => {
 }
 
 export const UsageScreen = () => {
-  const { identity } = useInternetIdentity()
+  const { identity, isAuthenticated } = useInternetIdentity()
   const [controllerId, setControllerId] = useState<string | null>(null)
   const [isLoading, setLoading] = useState(true)
 
   const updateControllerId = useCallback(async () => {
-    if (!identity) return
+    if (!identity || !isAuthenticated) return
 
     const controllerId = await queryUserController(identity)
 
@@ -36,7 +36,7 @@ export const UsageScreen = () => {
     }
 
     setControllerId(controllerId)
-  }, [identity])
+  }, [identity, isAuthenticated])
 
   useEffect(() => {
     updateControllerId()
