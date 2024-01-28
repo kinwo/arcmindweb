@@ -1,37 +1,17 @@
-'use client';
+'use client'
 
-import Head from 'next/head';
+import React from 'react'
 
-import style from './HomeScreen.module.css';
+import Head from 'next/head'
 
-import { SignIn } from '../components/auth/SignIn';
-import { useNavigate } from 'react-router-dom';
-import { Identity } from '@dfinity/agent';
-import { log } from '../util/log';
-import { queryUserController } from '../client/user';
-import { Button } from 'flowbite-react';
-import { useContext } from 'react';
-import { AuthContext } from '../components/context/AuthContext';
+import style from './HomeScreen.module.css'
+
+import { useNavigate } from 'react-router-dom'
+import { Button } from 'flowbite-react'
+import { AuthButton } from '../components/auth/AuthButton'
 
 export const HomeScreen = () => {
-  const navigate = useNavigate();
-  const { setControllerId } = useContext(AuthContext);
-
-  const triggerAuth = async (identity: Identity) => {
-    const controllerId = await queryUserController(identity);
-
-    if (controllerId === null) {
-      log.warn('No controller found');
-      return;
-    }
-
-    setControllerId(controllerId);
-    navigate(`/ai/${controllerId}`);
-  };
-
-  const navigateToSignUp = () => {
-    navigate('/signup');
-  };
+  const navigate = useNavigate()
 
   return (
     <section className={style.signinContainer}>
@@ -40,20 +20,19 @@ export const HomeScreen = () => {
       </Head>
 
       <section>
-        <h2 className="text-xl font-semibold text-slate-600">
-          Supercharge your AI workforce
+        <h2 className='text-3xl font-semibold text-slate-600 pb-[30px] text-center'>Supercharge your AI workforce</h2>
+        <h2 className='text-xl text-slate-600 pb-[30px] text-center'>with Goal-directed Autonomous Companion</h2>
+        <h2 className='text-xl text-slate-600 pb-[30px] text-center'>Long Term Memory Vector DB</h2>
+        <h2 className='text-xl text-slate-600 pb-[30px] text-center'>
+          Increased LLM faithfulness with Chain of Thoughts
         </h2>
       </section>
 
-      <Button
-        gradientDuoTone="purpleToPink"
-        className="text-xl w-[200px]"
-        onClick={() => navigateToSignUp()}
-      >
+      <Button gradientDuoTone='purpleToPink' className='text-xl w-[200px]' onClick={() => navigate('/signup')}>
         Sign Up
       </Button>
 
-      <SignIn triggerAuth={triggerAuth} />
+      <AuthButton />
     </section>
-  );
-};
+  )
+}

@@ -1,18 +1,18 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 
-import Head from 'next/head';
+import Head from 'next/head'
 
-import style from './SignUpScreen.module.css';
+import style from './SignUpScreen.module.css'
 
-import { ProductDisplay } from '../components/signup/ProductDisplay';
-import { SuccessDisplay } from '../components/signup/SuccessDisplay';
-import { Message } from '../components/Message';
+import { ProductDisplay } from '../components/signup/ProductDisplay'
+import { SuccessDisplay } from '../components/signup/SuccessDisplay'
+import { Message } from '../components/Message'
 
 type UISkeletonProps = {
-  children: React.ReactNode;
-};
+  children: React.ReactNode
+}
 
 const UISkeleton = ({ children }: UISkeletonProps) => {
   return (
@@ -20,43 +20,40 @@ const UISkeleton = ({ children }: UISkeletonProps) => {
       <Head>
         <title>Sign Up - ArcMindAI</title>
       </Head>
-      <h1 className="text-2xl text-slate-600 font-semibold">Sign Up</h1>
       {children}
     </section>
-  );
-};
+  )
+}
 
 export const SignUpScreen = () => {
-  let [message, setMessage] = useState('');
-  let [success, setSuccess] = useState(false);
-  let [sessionId, setSessionId] = useState('');
+  const [message, setMessage] = useState('')
+  const [success, setSuccess] = useState(false)
+  const [sessionId, setSessionId] = useState('')
 
   useEffect(() => {
     // Check to see if this is a redirect back from Checkout
-    const query = new URLSearchParams(window.location.search);
+    const query = new URLSearchParams(window.location.search)
 
     if (query.get('success')) {
-      setSuccess(true);
-      setSessionId(query.get('session_id') as string);
+      setSuccess(true)
+      setSessionId(query.get('session_id') as string)
     }
 
     if (query.get('canceled')) {
-      setSuccess(false);
-      setMessage(
-        "Order canceled -- continue to shop around and checkout when you're ready."
-      );
+      setSuccess(false)
+      setMessage("Order canceled -- continue to shop around and checkout when you're ready.")
     }
-  }, [sessionId]);
+  }, [sessionId])
 
-  let content: JSX.Element = <></>;
+  let content = <></>
 
   if (!success && message === '') {
-    content = <ProductDisplay />;
+    content = <ProductDisplay />
   } else if (success && sessionId !== '') {
-    content = <SuccessDisplay sessionId={sessionId} />;
+    content = <SuccessDisplay sessionId={sessionId} />
   } else {
-    content = <Message message={message} />;
+    content = <Message message={message} />
   }
 
-  return <UISkeleton>{content}</UISkeleton>;
-};
+  return <UISkeleton>{content}</UISkeleton>
+}

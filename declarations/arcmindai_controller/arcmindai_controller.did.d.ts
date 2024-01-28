@@ -21,12 +21,21 @@ export type GoalStatus = { 'Complete' : null } |
   { 'Running' : null };
 export interface _SERVICE {
   'clear_all_goals' : ActorMethod<[], undefined>,
+  'get_beamfi_canister' : ActorMethod<[], [] | [Principal]>,
   'get_brain_canister' : ActorMethod<[], [] | [Principal]>,
   'get_chathistory' : ActorMethod<[], Array<ChatHistory>>,
   'get_goal' : ActorMethod<[bigint], [] | [Goal]>,
+  'get_max_num_thoughts_allowed' : ActorMethod<[], bigint>,
+  'get_num_thoughts_processed' : ActorMethod<[], bigint>,
   'get_owner' : ActorMethod<[], [] | [Principal]>,
   'get_tools_canister' : ActorMethod<[], [] | [Principal]>,
+  'get_vector_canister' : ActorMethod<[], [] | [Principal]>,
+  'inc_max_num_thoughts_limit' : ActorMethod<
+    [string, string, number],
+    undefined
+  >,
   'insert_goal' : ActorMethod<[string], undefined>,
+  'is_exceed_max_num_thoughts_allowed' : ActorMethod<[], boolean>,
   'start_new_goal' : ActorMethod<[string], undefined>,
   'toggle_pause_cof' : ActorMethod<[], undefined>,
   'update_owner' : ActorMethod<[Principal], undefined>,

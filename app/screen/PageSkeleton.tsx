@@ -1,23 +1,17 @@
-'use client';
+'use client'
 
-import React, { createContext } from 'react';
-import { Outlet } from 'react-router-dom';
+import React from 'react'
+import { Outlet } from 'react-router-dom'
 
-import './PageSkeleton.css';
+import './PageSkeleton.css'
 
-import { Header } from '../components/header/Header';
-import { useAuthClient } from '../components/auth/useAuthClient';
-import { AuthContext } from '../components/context/AuthContext';
+import { Header } from '../components/header/Header'
 
-export const PageSkeleton = ({}) => {
-  const auth = useAuthClient();
-
+export const PageSkeleton = () => {
   return (
-    <AuthContext.Provider value={auth}>
-      <div className="main">
-        <Header />
-        <Outlet />
-      </div>
-    </AuthContext.Provider>
-  );
-};
+    <div className='main'>
+      <Header />
+      <Outlet />
+    </div>
+  )
+}

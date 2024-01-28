@@ -1,150 +1,111 @@
-'use client';
+'use client'
 
-import {
-  ChangeEvent,
-  FormEvent,
-  useCallback,
-  useEffect,
-  useId,
-  useState,
-} from 'react';
+import React, { ChangeEvent, FormEvent, useCallback, useId, useState } from 'react'
 
-import { createControllerActor } from '../canister/arcmindai';
-import { useChatHistory } from '../components/chat/useChatHistory';
-import { CenterSpinner } from '../components/Spinner';
+import { createControllerActor } from '../canister/arcmindai'
+import { useChatHistory } from '../components/chat/useChatHistory'
+import { CenterSpinner } from '../components/Spinner'
 
-import './ChatScreen.css';
-import { AlertMessage } from '../components/Alert';
-import { log } from '../util/log';
-import { Identity } from '@dfinity/agent';
-import { authProtect } from '../components/auth/authProtect';
-import { useParams } from 'react-router-dom';
-import { AuthClientHook } from '../components/auth/useAuthClient';
+import './ChatScreen.css'
+import { AlertMessage } from '../components/Alert'
+import { log } from '../util/log'
+import { useParams } from 'react-router-dom'
+import { useInternetIdentity } from '../components/auth/InternetIdentity'
 
-const initialInput = '';
+const initialInput = ''
 
-type Props = {
-  identity: Identity;
-  signout: () => void;
-};
+const ChatScreen = () => {
+  const { identity } = useInternetIdentity()
 
-const ChatScreen = ({ identity, signout }: Props) => {
   // Generate a unique id for the chat if not provided.
-  const hookId = useId();
-  const chatId = hookId;
+  const hookId = useId()
+  const chatId = hookId
 
-  const { controllerId } = useParams();
+  const { controllerId } = useParams()
 
-  const myControllerId = controllerId || '';
+  const myControllerId = controllerId || ''
 
-  const { messages, isLoading, isError } = useChatHistory(
-    chatId,
-    identity,
-    myControllerId
-  );
-  const [input, setInput] = useState<string>(initialInput);
+  const { messages, isLoading, isError } = useChatHistory(chatId, identity, myControllerId)
+  const [input, setInput] = useState<string>(initialInput)
 
   const submitGoal = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      if (!input || !identity) return;
+      e.preventDefault()
+      if (!input || !identity) return
 
       try {
-        setInput('');
-        await createControllerActor(identity, myControllerId).start_new_goal(
-          input
-        );
+        setInput('')
+        await createControllerActor(identity, myControllerId).start_new_goal(input)
       } catch (err) {
-        log.error('Error in submitting goal', err as Error);
+        log.error('Error in submitting goal', err as Error)
       }
     },
     [input, identity, myControllerId]
-  );
+  )
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
-  };
+    setInput(e.target.value)
+  }
 
   const togglePauseCOF = async () => {
-    if (!identity) return;
+    if (!identity) return
 
     try {
-      const result = await createControllerActor(
-        identity,
-        myControllerId
-      ).toggle_pause_cof();
-      log.info('Pause Chain of thoughts', { result });
+      const result = await createControllerActor(identity, myControllerId).toggle_pause_cof()
+      log.info('Pause Chain of thoughts', { result })
     } catch (err) {
-      log.error('Error in pausing Chain of thoughts', err as Error);
+      log.error('Error in pausing Chain of thoughts', err as Error)
     }
-  };
+  }
 
   const clearAllGoals = async () => {
-    if (!identity) return;
+    if (!identity) return
 
     try {
-      await createControllerActor(identity, myControllerId).clear_all_goals();
+      await createControllerActor(identity, myControllerId).clear_all_goals()
     } catch (err) {
-      log.error('Error in clearing all goals', err as Error);
+      log.error('Error in clearing all goals', err as Error)
     }
-  };
+  }
 
   return (
     <>
-      <div className="header">
-        <button
-          className="new-btn ml-2 hidden md:block"
-          onClick={togglePauseCOF}
-        >
+      <div className='header'>
+        <button className='new-btn ml-2 hidden md:block' onClick={togglePauseCOF}>
           Pause / Unpause
         </button>
-        <button className="new-btn" onClick={clearAllGoals}>
+        <button className='new-btn' onClick={clearAllGoals}>
           Clear
         </button>
       </div>
-      <h1 className="subtitle">alpha v0.2</h1>
-      {isLoading && <CenterSpinner aria-label="Loading chat..." />}
-      {isError && (
-        <AlertMessage message="We have a problem loading your chat" />
-      )}
+      {isLoading && <CenterSpinner aria-label='Loading chat...' />}
+      {isError && <AlertMessage message='We have a problem loading your chat' />}
 
-      <section className="chat-container">
+      <section className='chat-container'>
         {messages?.map((m, index) => {
-          const isUser = 'User' in m.role;
-          const isSystem = 'System' in m.role;
-          const fromName: string = isUser
-            ? 'User: '
-            : isSystem
-              ? 'System: '
-              : 'ArcMind: ';
+          const isUser = 'User' in m.role
+          const isSystem = 'System' in m.role
+          const fromName: string = isUser ? 'User: ' : isSystem ? 'System: ' : 'ArcMind: '
           return (
-            <div
-              className={isUser ? 'message-user' : 'message-arcmind'}
-              key={index}
-            >
+            <div className={isUser ? 'message-user' : 'message-arcmind'} key={index}>
               {fromName}
               {m.content}
             </div>
-          );
+          )
         })}
       </section>
       <form onSubmit={submitGoal}>
-        <div className="question-parant">
-          <div className="question-container">
-            <input
-              className="question"
-              value={input}
-              onChange={handleInputChange}
-              placeholder="Say something..."
-            />
-            <button className="send-btn" type="submit">
+        <div className='question-parant'>
+          <div className='question-container'>
+            <input className='question' value={input} onChange={handleInputChange} placeholder='Say something...' />
+            <button className='send-btn' type='submit'>
               Send
             </button>
           </div>
         </div>
       </form>
     </>
-  );
-};
+  )
+}
 
-export default authProtect(ChatScreen);
+export default ChatScreen

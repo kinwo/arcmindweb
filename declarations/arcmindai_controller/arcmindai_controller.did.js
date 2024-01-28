@@ -23,12 +23,22 @@ export const idlFactory = ({ IDL }) => {
   });
   return IDL.Service({
     'clear_all_goals' : IDL.Func([], [], []),
+    'get_beamfi_canister' : IDL.Func([], [IDL.Opt(IDL.Principal)], ['query']),
     'get_brain_canister' : IDL.Func([], [IDL.Opt(IDL.Principal)], ['query']),
     'get_chathistory' : IDL.Func([], [IDL.Vec(ChatHistory)], ['query']),
     'get_goal' : IDL.Func([IDL.Nat64], [IDL.Opt(Goal)], ['query']),
+    'get_max_num_thoughts_allowed' : IDL.Func([], [IDL.Nat64], ['query']),
+    'get_num_thoughts_processed' : IDL.Func([], [IDL.Nat64], ['query']),
     'get_owner' : IDL.Func([], [IDL.Opt(IDL.Principal)], ['query']),
     'get_tools_canister' : IDL.Func([], [IDL.Opt(IDL.Principal)], ['query']),
+    'get_vector_canister' : IDL.Func([], [IDL.Opt(IDL.Principal)], ['query']),
+    'inc_max_num_thoughts_limit' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Nat32],
+        [],
+        [],
+      ),
     'insert_goal' : IDL.Func([IDL.Text], [], []),
+    'is_exceed_max_num_thoughts_allowed' : IDL.Func([], [IDL.Bool], ['query']),
     'start_new_goal' : IDL.Func([IDL.Text], [], []),
     'toggle_pause_cof' : IDL.Func([], [], []),
     'update_owner' : IDL.Func([IDL.Principal], [], []),
@@ -39,5 +49,9 @@ export const init = ({ IDL }) => {
     IDL.Opt(IDL.Principal),
     IDL.Opt(IDL.Principal),
     IDL.Opt(IDL.Principal),
+    IDL.Opt(IDL.Principal),
+    IDL.Opt(IDL.Principal),
+    IDL.Opt(IDL.Text),
+    IDL.Opt(IDL.Text),
   ];
 };
