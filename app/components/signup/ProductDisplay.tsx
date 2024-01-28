@@ -19,7 +19,7 @@ const PricingCard = ({ title, price }: PricingCardProps) => {
   const [controllerId, setControllerId] = useState<string | null>(null)
   const hasExistingPlan = isAuthenticated && controllerId !== null
 
-  const ProductLookupKey = process.env.STRIPE_STARTER_LOOKUP_KEY ?? ''
+  const ProductLookupKey = process.env.NEXT_PUBLIC_STRIPE_STARTER_LOOKUP_KEY ?? ''
   const checkoutSessionURL = createFBFuncURL('/stripecreatecheckoutsession')
 
   const navigate = useNavigate()
