@@ -1,11 +1,11 @@
-'use client';
+import React from 'react'
 
-import { Spinner } from 'flowbite-react';
+import { Spinner } from 'flowbite-react'
 
-export const CenterSpinner = ({}) => {
+export const CenterSpinner = () => {
   return (
-    <div className="flex justify-center">
-      <Spinner color="info" size="lg" />
+    <div className='flex justify-center'>
+      <Spinner color='info' size='lg' />
     </div>
-  );
-};
+  )
+}

@@ -1,71 +1,70 @@
-import debug from 'debug';
+import debug from 'debug'
 
 const COLOURS: Record<string, string> = {
   debug: 'lightblue',
   info: 'blue',
   warn: 'pink',
   error: 'red',
-};
+}
 
 class Log {
-  BASE = 'arcmind';
+  BASE = 'arcmind'
 
   generateMessage(level: string, message: string, source?: string) {
     // Set the prefix which will cause debug to enable the message
-    const namespace = `${this.BASE}:${level}`;
-    const createDebug = debug(namespace);
+    const namespace = `${this.BASE}:${level}`
+    const createDebug = debug(namespace)
 
     // Set the colour of the message based on the level
-    createDebug.color = COLOURS[level];
+    createDebug.color = COLOURS[level]
 
     if (source) {
-      createDebug(source, message);
+      createDebug(source, message)
     } else {
-      createDebug(message);
+      createDebug(message)
     }
   }
 
   debug(message: string, source?: any) {
-    return this.generateMessage('debug', message, source);
+    return this.generateMessage('debug', message, source)
   }
 
   info(message: string, source?: any) {
-    return this.generateMessage('info', message, source);
+    return this.generateMessage('info', message, source)
   }
 
   warn(message: string, source?: any) {
-    return this.generateMessage('warn', message, source);
+    return this.generateMessage('warn', message, source)
   }
 
   error(message: string, source?: any) {
-    return this.generateMessage('error', message, source);
+    return this.generateMessage('error', message, source)
   }
 
   logObject(mesg: string, object?: Record<string, string>) {
     if (object == null) {
-      return;
+      return
     }
 
-    this.info(mesg);
+    this.info(mesg)
 
     try {
-      const jsonString = JSON.stringify(object);
-      this.info(jsonString);
+      const jsonString = JSON.stringify(object)
+      this.info(jsonString)
     } catch (error) {
-      this.info(object.toString());
+      this.info(object.toString())
     }
   }
 
   flattenCandidError(candidError: Record<string, string>) {
-    const key =
-      Object.keys(candidError).length > 0 ? Object.keys(candidError)[0] : null;
+    const key = Object.keys(candidError).length > 0 ? Object.keys(candidError)[0] : null
     if (key == null) {
-      return '';
+      return ''
     }
 
-    const fullMesg = key + ': ' + candidError[key];
-    return fullMesg;
+    const fullMesg = key + ': ' + candidError[key]
+    return fullMesg
   }
 }
 
-export const log = new Log();
+export const log = new Log()
