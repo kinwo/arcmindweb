@@ -22,13 +22,10 @@ export const HomeScreen = () => {
       <section>
         <h2 className='text-3xl font-semibold text-slate-600 pb-[30px] text-center'>Supercharge your AI workforce</h2>
         <h2 className='text-xl text-slate-600 pb-[30px] text-center'>
-          Accelerate your research with LLM&apox;s analytics power
+          Accelerate your research with Chain of Thoughts and increased faitfulness of LLM&apox;s analytics power
         </h2>
         <h2 className='text-xl text-slate-600 pb-[30px] text-center'>Goal-directed Autonomous Companion</h2>
         <h2 className='text-xl text-slate-600 pb-[30px] text-center'>Long Term Memory Vector DB</h2>
-        <h2 className='text-xl text-slate-600 pb-[30px] text-center'>
-          Increased LLM faithfulness with Chain of Thoughts
-        </h2>
       </section>
 
       <Button gradientDuoTone='purpleToPink' className='text-xl w-[200px]' onClick={() => navigate('/signup')}>
