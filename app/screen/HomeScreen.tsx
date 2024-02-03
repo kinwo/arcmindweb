@@ -22,7 +22,10 @@ export const HomeScreen = () => {
       <section>
         <h2 className='text-3xl font-semibold text-slate-600 pb-[30px] text-center'>Supercharge your AI workforce</h2>
         <h2 className='text-xl text-slate-600 pb-[30px] text-center'>
-          Accelerate your research with Chain of Thoughts and increased faitfulness of LLM&apos;s analytics power
+          Accelerate your research with Chain of Thoughts
+        </h2>
+        <h2 className='text-xl text-slate-600 pb-[30px] text-center'>
+          Increased faitfulness of LLM&apos;s analytics power
         </h2>
         <h2 className='text-xl text-slate-600 pb-[30px] text-center'>Goal-directed Autonomous Companion</h2>
         <h2 className='text-xl text-slate-600 pb-[30px] text-center'>Long Term Memory Vector DB</h2>
