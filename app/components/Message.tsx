@@ -1,9 +1,11 @@
+import React from 'react'
+
 type MessageProps = {
-  message: string;
-};
+  message: string
+}
 
 export const Message = ({ message }: MessageProps) => (
   <section>
     <p>{message}</p>
   </section>
-);
+)

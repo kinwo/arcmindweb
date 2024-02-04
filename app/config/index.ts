@@ -10,4 +10,5 @@ export const AuthConfig = {
 
 export const SWRKey = {
   Chat: '/api/chathistory/',
+  ControllerId: '/api/controllerid/',
 }
