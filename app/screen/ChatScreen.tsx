@@ -106,7 +106,7 @@ const ChatScreen = () => {
       <form onSubmit={submitGoal}>
         <div className='question-parant'>
           <div className='question-container'>
-            <input className='question' value={input} onChange={handleInputChange} placeholder='Say something...' />
+            <input className='question' value={input} onChange={handleInputChange} placeholder='Enter your goal...' />
             <button className='send-btn' type='submit'>
               Send
             </button>
