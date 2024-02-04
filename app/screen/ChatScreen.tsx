@@ -11,11 +11,12 @@ import { AlertMessage } from '../components/Alert'
 import { log } from '../util/log'
 import { useParams } from 'react-router-dom'
 import { useInternetIdentity } from '../components/auth/InternetIdentity'
+import { AuthButton } from '../components/auth/AuthButton'
 
 const initialInput = ''
 
 const ChatScreen = () => {
-  const { identity } = useInternetIdentity()
+  const { identity, isAuthenticated } = useInternetIdentity()
 
   // Generate a unique id for the chat if not provided.
   const hookId = useId()
@@ -66,6 +67,14 @@ const ChatScreen = () => {
     } catch (err) {
       log.error('Error in clearing all goals', err as Error)
     }
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className='header mx-auto'>
+        <AuthButton />
+      </div>
+    )
   }
 
   return (

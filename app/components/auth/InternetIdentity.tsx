@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useCallback, createContext, useState } from 'react'
 
 import { log } from '@/app/util/log'
 import { Identity } from '@dfinity/agent'
@@ -16,7 +16,7 @@ interface InternetIdentityContextState {
   signout: () => Promise<void>
 }
 
-export const InternetIdentityContext = React.createContext<InternetIdentityContextState>({
+export const InternetIdentityContext = createContext<InternetIdentityContextState>({
   error: null,
   authClient: null,
   identityProvider: '',
@@ -37,22 +37,22 @@ interface UseInternetIdentityProps {
 const useICIIAuth = ({
   authClientOptions: { onError, onSuccess, ...authClientOptions } = {},
 }: UseInternetIdentityProps = {}) => {
-  const [authClient, setAuthClient] = React.useState<AuthClient | null>(null)
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false)
-  const [error, setError] = React.useState<string | null>(null)
+  const [authClient, setAuthClient] = useState<AuthClient | null>(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const identityProvider = (authClientOptions.identityProvider || '').toString()
 
-  const createAuthClient = React.useCallback(async () => {
+  const createAuthClient = useCallback(async () => {
     const authClient = await AuthClient.create()
     setAuthClient(authClient)
   }, [])
 
-  React.useEffect(() => {
+  useEffect(() => {
     createAuthClient()
   }, [createAuthClient])
 
-  const setAuthStatus = React.useCallback(async (authClient: AuthClient) => {
+  const setAuthStatus = useCallback(async (authClient: AuthClient) => {
     if (authClient) {
       const isAuthenticated = await authClient.isAuthenticated()
       return setIsAuthenticated(isAuthenticated)
@@ -60,11 +60,11 @@ const useICIIAuth = ({
     return setIsAuthenticated(false)
   }, [])
 
-  React.useEffect(() => {
+  useEffect(() => {
     authClient && setAuthStatus(authClient)
   }, [authClient, setAuthStatus])
 
-  const handleOnSuccess = React.useCallback(
+  const handleOnSuccess = useCallback(
     (authClient: AuthClient) => {
       setIsAuthenticated(true)
       onSuccess && onSuccess(authClient.getIdentity())
@@ -72,7 +72,7 @@ const useICIIAuth = ({
     [onSuccess]
   )
 
-  const handleOnError = React.useCallback(
+  const handleOnError = useCallback(
     (error: string | undefined) => {
       setError(error ?? '')
       onError && onError(error)
@@ -80,7 +80,7 @@ const useICIIAuth = ({
     [onError]
   )
 
-  const authenticate = React.useCallback(async () => {
+  const authenticate = useCallback(async () => {
     if (authClient) {
       log.info('>> authenticate: ', { authClient, identityProvider })
 
@@ -95,7 +95,7 @@ const useICIIAuth = ({
     }
   }, [authClient, authClientOptions, handleOnError, handleOnSuccess, identityProvider])
 
-  const signout = React.useCallback(async () => {
+  const signout = useCallback(async () => {
     if (authClient) {
       await authClient.logout()
       setIsAuthenticated(false)

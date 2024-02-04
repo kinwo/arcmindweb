@@ -17,7 +17,7 @@ const fetcher =
       const messages = await createControllerActor(identity, controllerId).get_chathistory()
       return messages
     } catch (err) {
-      log.error('Error in submitting goal', err as Error)
+      log.error('Error in fetching chat history', err as Error)
       return []
     }
   }
