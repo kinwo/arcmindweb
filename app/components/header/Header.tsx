@@ -7,6 +7,7 @@ import { GuestMenu } from './GuestMenu'
 import { UserMenu } from './UserMenu'
 import { useInternetIdentity } from '../auth/InternetIdentity'
 import { queryUserController } from '@/app/client/user'
+import { Logo } from '../icons'
 
 export const Header = () => {
   const { isAuthenticated, identity, signout } = useInternetIdentity()
@@ -28,7 +29,9 @@ export const Header = () => {
     <section>
       <div className={style.header}>
         <div className={style.title}>
-          <Link to='/'>ArcMind AI</Link>
+          <Link to='/'>
+            <Logo className='w-[200px] md:w-[300px]' />
+          </Link>
         </div>
         <div className={style.menu}>{isValidUser ? <UserMenu signout={signout} /> : <GuestMenu />}</div>
       </div>

@@ -18,8 +18,6 @@ const initialInput = ''
 const ChatScreen = () => {
   const { identity, isAuthenticated } = useInternetIdentity()
 
-  log.info('ChatScreen', { identity: identity?.getPrincipal().toString() })
-
   // Generate a unique id for the chat if not provided.
   const hookId = useId()
   const chatId = hookId
