@@ -22,11 +22,7 @@ export const Header = () => {
     }
 
     query()
-
-    return () => {
-      // this now gets called when the component unmounts
-    }
-  })
+  }, [identity, isAuthenticated])
 
   return (
     <section>
