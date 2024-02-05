@@ -9,6 +9,7 @@ import { queryUserController } from '@/app/client/user'
 import { queryNumAvailableController } from '@/app/client/canister'
 import { CenterSpinner } from '../Spinner'
 import { log } from '@/app/util/log'
+import Link from 'next/link'
 
 type PricingCardProps = {
   title: string
@@ -17,19 +18,17 @@ type PricingCardProps = {
 
 const WaitListCard = () => {
   return (
-    <section className='text-center pb-6'>
+    <section className='flex flex-col text-center pb-6 space-y-6'>
       <Alert color='info'>
         <span className='font-semibold text-[16px]'>All available ArcMind AI instances have been subscribed</span>
-        <div>Please join our waitlist below. We will notify you once new ArcMind AI instances are avaialble.</div>
+        <div>Please join our waitlist. We will notify you by email once new ArcMind AI instances are avaialble.</div>
       </Alert>
 
-      <iframe
-        src='https://docs.google.com/forms/d/e/1FAIpQLSf8wjv-Gp0DzIw2C8J32dyE_nBt_LHO6GrGsQR8bS7al31G3g/viewform?embedded=true'
-        width='640'
-        height='821'
-      >
-        Loading…
-      </iframe>
+      <div className='md:max-w-[200px] mx-auto'>
+        <Button as={Link} href='https://forms.gle/2Sgyg66CEdMMdzye7' target='_blank'>
+          Join ArcMind AI Waitlist
+        </Button>
+      </div>
     </section>
   )
 }

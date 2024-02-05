@@ -5,6 +5,7 @@ import { queryUserController } from '@/app/client/user'
 
 import { SWRKey } from '../../config'
 import { log } from '../../util/log'
+import { useInternetIdentity } from '../auth/InternetIdentity'
 
 const AutoRefreshSecs = 5
 
@@ -35,6 +36,9 @@ export const useControllerId = (identity: Identity | null): Response => {
   const { data, error, isLoading, mutate } = useSWR(`${SWRKey.ControllerId}${principalId}`, fetcher(identity), {
     refreshInterval: 1000 * AutoRefreshSecs,
   })
+
+  const { setControllerId } = useInternetIdentity()
+  setControllerId(data ?? null)
 
   return {
     controllerId: data ?? null,
