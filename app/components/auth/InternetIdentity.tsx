@@ -12,6 +12,8 @@ interface InternetIdentityContextState {
   identityProvider: string
   isAuthenticated: boolean
   identity: Identity | null
+  controllerId: string | null
+  setControllerId: (controllerId: string | null) => void
   authenticate: () => Promise<void>
   signout: () => Promise<void>
 }
@@ -22,6 +24,8 @@ export const InternetIdentityContext = createContext<InternetIdentityContextStat
   identityProvider: '',
   isAuthenticated: false,
   identity: null,
+  controllerId: null,
+  setControllerId: () => null,
   authenticate: () => new Promise(() => null),
   signout: () => new Promise(() => null),
 })
@@ -40,6 +44,7 @@ const useICIIAuth = ({
   const [authClient, setAuthClient] = useState<AuthClient | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [controllerId, setControllerId] = useState<string | null>(null)
 
   const identityProvider = (authClientOptions.identityProvider || '').toString()
 
@@ -108,6 +113,8 @@ const useICIIAuth = ({
     identityProvider,
     isAuthenticated,
     identity: authClient ? authClient.getIdentity() : null,
+    controllerId,
+    setControllerId,
     authenticate,
     signout,
   }

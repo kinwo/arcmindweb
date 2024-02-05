@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 import { Button, Dropdown } from 'flowbite-react'
 import { HiCurrencyDollar, HiLogout, HiOutlineChat, HiOutlineMenu, HiOutlineTrendingUp } from 'react-icons/hi'
@@ -6,7 +6,6 @@ import { HiCurrencyDollar, HiLogout, HiOutlineChat, HiOutlineMenu, HiOutlineTren
 import style from './Menu.module.css'
 import { useNavigate } from 'react-router-dom'
 import { useInternetIdentity } from '../auth/InternetIdentity'
-import { queryUserController } from '@/app/client/user'
 
 type UserMenuProps = {
   signout: () => Promise<void>
@@ -14,24 +13,7 @@ type UserMenuProps = {
 
 export const UserMenu = ({ signout }: UserMenuProps) => {
   const navigate = useNavigate()
-
-  const { identity } = useInternetIdentity()
-  const [controllerId, setControllerId] = useState<string | null>(null)
-
-  useEffect(() => {
-    const query = async () => {
-      if (identity) {
-        const result = await queryUserController(identity)
-        setControllerId(result)
-      }
-    }
-
-    query()
-
-    return () => {
-      // this now gets called when the component unmounts
-    }
-  }, [identity])
+  const { controllerId } = useInternetIdentity()
 
   const processLogout = async () => {
     await signout()

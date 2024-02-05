@@ -8,6 +8,9 @@ type ButtonProps = {
   onClick?: () => void
   type?: 'button' | 'submit' | 'reset'
   outline?: boolean
+  as?: any
+  href?: string
+  target?: string
 }
 
 export const Button = ({ children, ...rest }: ButtonProps) => {

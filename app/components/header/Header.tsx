@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 
 import style from './Header.module.css'
@@ -6,24 +6,11 @@ import style from './Header.module.css'
 import { GuestMenu } from './GuestMenu'
 import { UserMenu } from './UserMenu'
 import { useInternetIdentity } from '../auth/InternetIdentity'
-import { queryUserController } from '@/app/client/user'
 import { Logo } from '../icons'
 
 export const Header = () => {
-  const { isAuthenticated, identity, signout } = useInternetIdentity()
-  const [controllerId, setControllerId] = useState<string | null>(null)
-  const isValidUser = isAuthenticated && controllerId !== null
-
-  useEffect(() => {
-    const query = async () => {
-      if (isAuthenticated && identity) {
-        const result = await queryUserController(identity)
-        setControllerId(result)
-      }
-    }
-
-    query()
-  }, [identity, isAuthenticated])
+  const { isAuthenticated, identity, controllerId, signout } = useInternetIdentity()
+  const isValidUser = isAuthenticated && identity != null && controllerId !== null
 
   return (
     <section>

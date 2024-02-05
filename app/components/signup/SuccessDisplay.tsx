@@ -1,9 +1,11 @@
 import React from 'react'
+
+import { useNavigate } from 'react-router-dom'
 import { Button as FRButton, Spinner } from 'flowbite-react'
+
 import { useControllerId } from './useControllerId'
 import { useInternetIdentity } from '../auth/InternetIdentity'
 import { Button } from '../library/Button'
-import { useNavigate } from 'react-router-dom'
 
 type SuccessDisplayProps = {
   sessionId: string
@@ -13,8 +15,8 @@ type SuccessDisplayProps = {
 export const SuccessDisplay = (props: SuccessDisplayProps) => {
   const { identity } = useInternetIdentity()
   const { controllerId } = useControllerId(identity)
-  const navigate = useNavigate()
 
+  const navigate = useNavigate()
   const hasProvisioned = controllerId !== null
 
   return (
