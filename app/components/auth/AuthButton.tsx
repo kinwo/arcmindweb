@@ -8,23 +8,21 @@ import { queryUserController } from '@/app/client/user'
 import { useNavigate } from 'react-router-dom'
 
 export const AuthButton = () => {
-  const { authenticate, signout, isAuthenticated, identity } = useInternetIdentity()
+  const { authenticate, signout, isAuthenticated, identity, controllerId, setControllerId } = useInternetIdentity()
   const [isLoading, setLoading] = useState(false)
   const navigate = useNavigate()
   const [isAutoRedirect, setIsAutoRedirect] = useState(false)
-
-  const [controllerId, setControllerId] = useState<string | null>(null)
 
   useEffect(() => {
     if (isAuthenticated && identity) {
       const loadControllerId = async () => {
         try {
           setLoading(true)
-          const controllerId = await queryUserController(identity)
-          setControllerId(controllerId)
+          const myControllerId = await queryUserController(identity)
+          setControllerId(myControllerId)
 
-          if (isAutoRedirect && controllerId) {
-            navigate(`/ai/${controllerId}`)
+          if (isAutoRedirect && myControllerId) {
+            navigate(`/ai/${myControllerId}`)
           }
         } catch (error) {
           log.error('Error in loadControllerId', error as Error)

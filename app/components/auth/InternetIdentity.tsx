@@ -87,8 +87,6 @@ const useICIIAuth = ({
 
   const authenticate = useCallback(async () => {
     if (authClient) {
-      log.info('>> authenticate: ', { authClient, identityProvider })
-
       await authClient.login({
         onSuccess: () => handleOnSuccess(authClient),
         onError: handleOnError,
@@ -104,6 +102,7 @@ const useICIIAuth = ({
     if (authClient) {
       await authClient.logout()
       setIsAuthenticated(false)
+      setControllerId(null)
     }
   }, [authClient])
 

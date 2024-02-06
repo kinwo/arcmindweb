@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Button } from '../library/Button'
 import { Alert, Card } from 'flowbite-react'
 import { CheckCircle } from '../icons'
 import { useInternetIdentity } from '../auth/InternetIdentity'
 import { createFBFuncURL } from '@/app/url'
 import { useNavigate } from 'react-router-dom'
-import { queryUserController } from '@/app/client/user'
 import { queryNumAvailableController } from '@/app/client/canister'
 import { CenterSpinner } from '../Spinner'
 import { log } from '@/app/util/log'
@@ -34,29 +33,17 @@ const WaitListCard = () => {
 }
 
 const PricingCard = ({ title, price }: PricingCardProps) => {
-  const { identity, isAuthenticated, authenticate } = useInternetIdentity()
+  const { identity, isAuthenticated, authenticate, controllerId } = useInternetIdentity()
   const [isLoading, setLoading] = useState(false)
   const [showWaitListForm, setShowWaitListForm] = useState(false)
 
   const ownerPrincipalId = identity?.getPrincipal().toString() ?? ''
-  const [controllerId, setControllerId] = useState<string | null>(null)
   const hasExistingPlan = isAuthenticated && controllerId !== null
 
   const ProductLookupKey = process.env.NEXT_PUBLIC_STRIPE_STARTER_LOOKUP_KEY ?? ''
   const checkoutSessionURL = createFBFuncURL('/stripecreatecheckoutsession')
 
   const navigate = useNavigate()
-
-  useEffect(() => {
-    const query = async () => {
-      if (isAuthenticated && identity) {
-        const result = await queryUserController(identity)
-        setControllerId(result)
-      }
-    }
-
-    query()
-  }, [identity, isAuthenticated])
 
   const handleChoosePlan = async () => {
     try {

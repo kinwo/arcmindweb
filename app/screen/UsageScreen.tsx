@@ -2,7 +2,6 @@ import { Card } from 'flowbite-react'
 import React, { useCallback, useEffect, useState } from 'react'
 import { createControllerActor } from '../canister/arcmindai'
 import { log } from '../util/log'
-import { queryUserController } from '../client/user'
 import { useInternetIdentity } from '../components/auth/InternetIdentity'
 import { CenterSpinner } from '../components/Spinner'
 
@@ -21,26 +20,8 @@ const MyCard = ({ title, metric }: MyCardProps) => {
 }
 
 export const UsageScreen = () => {
-  const { identity, isAuthenticated } = useInternetIdentity()
-  const [controllerId, setControllerId] = useState<string | null>(null)
+  const { identity, controllerId } = useInternetIdentity()
   const [isLoading, setLoading] = useState(true)
-
-  const updateControllerId = useCallback(async () => {
-    if (!identity || !isAuthenticated) return
-
-    const controllerId = await queryUserController(identity)
-
-    if (controllerId === null) {
-      log.warn('No controller found')
-      return
-    }
-
-    setControllerId(controllerId)
-  }, [identity, isAuthenticated])
-
-  useEffect(() => {
-    updateControllerId()
-  }, [updateControllerId])
 
   const [maxNumThoughtsAllowed, setMaxNumThoughtsAllowed] = useState<bigint | null>(null)
   const [numThoughtsProcessed, setNumThoughtsProcessed] = useState<bigint | null>(null)
