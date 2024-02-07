@@ -14,11 +14,7 @@
   @apply mb-auto pb-[200px] md:px-24 px-4;
 }
 
-.chat-container .message-user {
-  @apply mb-4 text-pink-500;
-}
-
-.chat-container .message-arcmind {
+.chat-container .message {
   @apply mb-4 text-slate-400;
 }
 
@@ -40,4 +36,8 @@
 
 .new-btn {
   @apply bg-purple-500 rounded-md shadow-lg float-right px-8 py-2 text-white;
+}
+
+.thought-title {
+  @apply font-semibold text-lg;
 }
