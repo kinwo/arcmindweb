@@ -2,18 +2,85 @@
 
 import React, { ChangeEvent, FormEvent, useCallback, useId, useState } from 'react'
 
+import classNames from 'classnames'
+
+import _ from 'lodash'
+
 import { createControllerActor } from '../canister/arcmindai'
 import { useChatHistory } from '../components/chat/useChatHistory'
 import { CenterSpinner } from '../components/Spinner'
 
-import './ChatScreen.css'
 import { AlertMessage } from '../components/Alert'
 import { log } from '../util/log'
 import { useParams } from 'react-router-dom'
 import { useInternetIdentity } from '../components/auth/InternetIdentity'
 import { AuthButton } from '../components/auth/AuthButton'
+import { isJSON } from '../util/jsonutils'
+import { GenericContentProps, ThoughtContentProps } from './types'
+
+import style from './ChatScreen.module.css'
+import { Accordion, List } from 'flowbite-react'
 
 const initialInput = ''
+
+const ThoughtContent = ({ thoughts, command, fromName }: ThoughtContentProps) => {
+  const plans = thoughts.plan.split('- ').filter(plan => !_.isEmpty(plan.trim()))
+
+  return (
+    <div className={style.message}>
+      <div className='text-amorange'>{fromName}</div>
+      <div className='py-2'>{thoughts.speak}</div>
+
+      <Accordion>
+        <Accordion.Panel>
+          <Accordion.Title>Thoughts</Accordion.Title>
+          <Accordion.Content>
+            <div className='flex flex-col gap-y-3'>
+              <div className={classNames(style['thought-title'], 'text-amorange')}>Thoughts</div>
+              <div>{thoughts.text}</div>
+              <div className={classNames(style['thought-title'], 'text-amyellow')}>Plan</div>
+              <List>
+                {plans.map((plan, index) => {
+                  return (
+                    <div className={style['message']} key={index}>
+                      <List.Item key={index}>{plan}</List.Item>
+                    </div>
+                  )
+                })}
+              </List>
+              <div className={classNames(style['thought-title'], 'text-amgreen')}>Reasoning</div>
+              <div>{thoughts.reasoning}</div>
+              <div className={classNames(style['thought-title'], 'text-amblue')}>Criticism</div>
+              <div>{thoughts.criticism}</div>
+              <div className={classNames(style['thought-title'], 'text-ampink')}>Command</div>
+              <div>
+                {command.name}: {JSON.stringify(command.args)}
+              </div>
+            </div>
+          </Accordion.Content>
+        </Accordion.Panel>
+      </Accordion>
+    </div>
+  )
+}
+
+const NormalContent = ({ fromName, content }: GenericContentProps) => {
+  return (
+    <div className={style.message}>
+      <div className='text-amorange'>{fromName}</div>
+      <div className='py-2'>{content}</div>
+    </div>
+  )
+}
+
+const UserContent = ({ fromName, content }: GenericContentProps) => {
+  return (
+    <div className={style.message}>
+      <div className='text-ampink'>{fromName}</div>
+      <div className='py-2'>{content}</div>
+    </div>
+  )
+}
 
 const ChatScreen = () => {
   const { identity, isAuthenticated } = useInternetIdentity()
@@ -71,7 +138,7 @@ const ChatScreen = () => {
 
   if (!isAuthenticated) {
     return (
-      <div className='header mx-auto'>
+      <div className={classNames(style.header, 'mx-auto')}>
         <AuthButton />
       </div>
     )
@@ -79,35 +146,52 @@ const ChatScreen = () => {
 
   return (
     <>
-      <div className='header'>
-        <button className='new-btn ml-2 hidden md:block' onClick={togglePauseCOF}>
+      <div className={style.header}>
+        <button className={classNames(style['new-btn'], 'ml-2', 'hidden md:block')} onClick={togglePauseCOF}>
           Pause / Unpause
         </button>
-        <button className='new-btn' onClick={clearAllGoals}>
+        <button className={style['new-btn']} onClick={clearAllGoals}>
           Clear
         </button>
       </div>
       {isLoading && <CenterSpinner aria-label='Loading chat...' />}
       {isError && <AlertMessage message='We have a problem loading your chat' />}
 
-      <section className='chat-container'>
+      <section className={style['chat-container']}>
         {messages?.map((m, index) => {
           const isUser = 'User' in m.role
           const isSystem = 'System' in m.role
-          const fromName: string = isUser ? 'User: ' : isSystem ? 'System: ' : 'ArcMind: '
-          return (
-            <div className={isUser ? 'message-user' : 'message-arcmind'} key={index}>
-              {fromName}
-              {m.content}
-            </div>
-          )
+          const fromName: string = isUser ? 'User' : isSystem ? 'System' : 'ArcMind'
+          const content = m.content
+
+          // check if content has thoughts property
+          const contentJSON = isJSON(content)
+          const isThought = contentJSON && 'thoughts' in contentJSON
+
+          if (isThought) {
+            const thoughtsContent = contentJSON as ThoughtContentProps
+            const { thoughts, command } = thoughtsContent
+
+            return <ThoughtContent fromName={fromName} thoughts={thoughts} command={command} key={index} />
+          }
+
+          if (isUser) {
+            return <UserContent fromName={fromName} content={content} key={index} />
+          }
+
+          return <NormalContent fromName={fromName} content={content} key={index} />
         })}
       </section>
       <form onSubmit={submitGoal}>
-        <div className='question-parant'>
-          <div className='question-container'>
-            <input className='question' value={input} onChange={handleInputChange} placeholder='Enter your goal...' />
-            <button className='send-btn' type='submit'>
+        <div className={style['question-parant']}>
+          <div className={style['question-container']}>
+            <input
+              className={style.question}
+              value={input}
+              onChange={handleInputChange}
+              placeholder='Enter your goal...'
+            />
+            <button className={style['send-btn']} type='submit'>
               Send
             </button>
           </div>
