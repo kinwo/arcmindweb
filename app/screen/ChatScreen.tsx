@@ -4,7 +4,7 @@ import React, { ChangeEvent, FormEvent, useCallback, useId, useState } from 'rea
 
 import classNames from 'classnames'
 
-import _ from 'lodash'
+import _, { isArray } from 'lodash'
 
 import { createControllerActor } from '../canister/arcmindai'
 import { useChatHistory } from '../components/chat/useChatHistory'
@@ -16,15 +16,17 @@ import { useParams } from 'react-router-dom'
 import { useInternetIdentity } from '../components/auth/InternetIdentity'
 import { AuthButton } from '../components/auth/AuthButton'
 import { isJSON } from '../util/jsonutils'
-import { GenericContentProps, ThoughtContentProps } from './types'
+import { GenericContentProps, SearchResult, SearchResultContentProps, ThoughtContentProps } from './types'
 
 import style from './ChatScreen.module.css'
 import { Accordion, List } from 'flowbite-react'
+import Link from 'next/link'
 
 const initialInput = ''
 
 const ThoughtContent = ({ thoughts, command, fromName }: ThoughtContentProps) => {
   const plans = thoughts.plan.split('- ').filter(plan => !_.isEmpty(plan.trim()))
+  const argKeys: string[] = Object.keys(command.args)
 
   return (
     <div className={style.message}>
@@ -42,7 +44,7 @@ const ThoughtContent = ({ thoughts, command, fromName }: ThoughtContentProps) =>
               <List>
                 {plans.map((plan, index) => {
                   return (
-                    <div className={style['message']} key={index}>
+                    <div className={style.message} key={index}>
                       <List.Item key={index}>{plan}</List.Item>
                     </div>
                   )
@@ -52,10 +54,43 @@ const ThoughtContent = ({ thoughts, command, fromName }: ThoughtContentProps) =>
               <div>{thoughts.reasoning}</div>
               <div className={classNames(style['thought-title'], 'text-amblue')}>Criticism</div>
               <div>{thoughts.criticism}</div>
-              <div className={classNames(style['thought-title'], 'text-ampink')}>Command</div>
+              <div className={classNames(style['thought-title'], 'text-ampink')}>Command - {command.name}</div>
               <div>
-                {command.name}: {JSON.stringify(command.args)}
+                {argKeys.map((key, index) => {
+                  return (
+                    <div key={index}>
+                      <span className='font-semibold'>{key}:</span> {command.args[key]}
+                    </div>
+                  )
+                })}
               </div>
+            </div>
+          </Accordion.Content>
+        </Accordion.Panel>
+      </Accordion>
+    </div>
+  )
+}
+
+const SearchResultContent = ({ fromName, searchResult }: SearchResultContentProps) => {
+  return (
+    <div className={style.message}>
+      <div className='text-amorange py-2'>{fromName}</div>
+      <Accordion>
+        <Accordion.Panel>
+          <Accordion.Title>Search Result</Accordion.Title>
+          <Accordion.Content>
+            <div className='flex flex-col gap-y-3'>
+              {searchResult.map((result, index) => {
+                return (
+                  <div className={style.message} key={index}>
+                    <Link href={result.link} className='text-amorange decoration-1 underline'>
+                      {result.title}
+                    </Link>
+                    <div>{result.snippet}</div>
+                  </div>
+                )
+              })}
             </div>
           </Accordion.Content>
         </Accordion.Panel>
@@ -167,12 +202,18 @@ const ChatScreen = () => {
           // check if content has thoughts property
           const contentJSON = isJSON(content)
           const isThought = contentJSON && 'thoughts' in contentJSON
+          const isSearchResult = contentJSON && isArray(contentJSON) && 'link' in contentJSON[0]
 
           if (isThought) {
             const thoughtsContent = contentJSON as ThoughtContentProps
             const { thoughts, command } = thoughtsContent
 
             return <ThoughtContent fromName={fromName} thoughts={thoughts} command={command} key={index} />
+          }
+
+          if (isSearchResult) {
+            const searchResult = contentJSON as SearchResult[]
+            return <SearchResultContent fromName={fromName} searchResult={searchResult} key={index} />
           }
 
           if (isUser) {
