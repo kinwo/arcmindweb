@@ -1,7 +1,14 @@
 import React from 'react'
 
 import { Button, Dropdown } from 'flowbite-react'
-import { HiCurrencyDollar, HiLogout, HiOutlineChat, HiOutlineMenu, HiOutlineTrendingUp } from 'react-icons/hi'
+import {
+  HiCurrencyDollar,
+  HiLogout,
+  HiOutlineChat,
+  HiOutlineMenu,
+  HiOutlineSpeakerphone,
+  HiOutlineTrendingUp,
+} from 'react-icons/hi'
 
 import style from './Menu.module.css'
 import { useNavigate } from 'react-router-dom'
@@ -38,6 +45,9 @@ export const UserMenu = ({ signout }: UserMenuProps) => {
       </Dropdown.Item>
       <Dropdown.Item icon={HiCurrencyDollar} className={style.menuItem} onClick={() => navigate('/myplan')}>
         My Plan
+      </Dropdown.Item>
+      <Dropdown.Item icon={HiOutlineSpeakerphone} className={style.menuItem} href='/support' target='_blank' as='a'>
+        Support
       </Dropdown.Item>
       <Dropdown.Item icon={HiLogout} className={style.menuItem} onClick={() => processLogout()}>
         Logout
