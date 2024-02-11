@@ -9,10 +9,19 @@ export const Footer = () => {
     <section className={style.footerContainer}>
       <div className={style.footer}></div>
       <div className='flex flex-row w-full pb-4 space-x-4 justify-center'>
-        <div>© 2024 ArcMind</div>
-        <Link href='/terms'>Terms</Link>
-        <Link href='/privacy'>Privacy</Link>
-        <Link href='/support'>Support</Link>
+        <div>© 2024 ArcMind AI</div>
+        <Link href='https://github.com/arcmindai/arcmindai' target='_blank'>
+          GitHub
+        </Link>
+        <Link href='/terms' target='_blank'>
+          Terms
+        </Link>
+        <Link href='/privacy' target='_blank'>
+          Privacy
+        </Link>
+        <Link href='/support' target='_blank'>
+          Support
+        </Link>
       </div>
 
       <Link href='https://internetcomputer.org' target='_blank' className='absolute right-2 bottom-2'>

@@ -1,5 +1,5 @@
 .footerContainer {
-  @apply absolute bottom-2 left-0  w-full text-gray-600;
+  @apply absolute bottom-2 left-0 w-full text-gray-600 hidden md:block;
 }
 
 .footer {
