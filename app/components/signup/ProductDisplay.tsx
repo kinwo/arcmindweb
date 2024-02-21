@@ -122,7 +122,7 @@ const PricingCard = ({ title, price }: PricingCardProps) => {
 export const ProductDisplay = () => {
   return (
     <section>
-      <PricingCard title='Starter' price={5} />
+      <PricingCard title='Starter' price={18.99} />
     </section>
   )
 }
