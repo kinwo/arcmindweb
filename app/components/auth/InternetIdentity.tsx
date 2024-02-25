@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useCallback, createContext, useState } fr
 import { log } from '@/app/util/log'
 import { Identity } from '@dfinity/agent'
 import { AuthClient, AuthClientLoginOptions } from '@dfinity/auth-client'
+import { queryUserController } from '@/app/client/user'
 
 interface InternetIdentityContextState {
   error: string | null
@@ -97,6 +98,22 @@ const useICIIAuth = ({
       log.info('>> authenticate: no client')
     }
   }, [authClient, authClientOptions, handleOnError, handleOnSuccess, identityProvider])
+
+  useEffect(() => {
+    if (isAuthenticated && authClient) {
+      const loadControllerId = async () => {
+        try {
+          const myControllerId = await queryUserController(authClient.getIdentity())
+          setControllerId(myControllerId)
+        } catch (error) {
+          log.error('Error in loadControllerId', error as Error)
+        }
+      }
+
+      loadControllerId()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, authClient])
 
   const signout = useCallback(async () => {
     if (authClient) {
