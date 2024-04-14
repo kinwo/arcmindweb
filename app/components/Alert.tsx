@@ -1,18 +1,20 @@
-'use client';
+'use client'
 
-import { Alert } from 'flowbite-react';
-import { HiInformationCircle } from 'react-icons/hi';
+import React from 'react'
+
+import { Alert } from 'flowbite-react'
+import { HiInformationCircle } from 'react-icons/hi'
 
 type Props = {
-  message: string;
-};
+  message: string
+}
 
 export const AlertMessage = ({ message }: Props) => {
   return (
-    <Alert color="failure" icon={HiInformationCircle} className="my-3">
+    <Alert color='failure' icon={HiInformationCircle} className='my-3'>
       <span>
         <p>{message}</p>
       </span>
     </Alert>
-  );
-};
+  )
+}
