@@ -2,7 +2,7 @@ import React from 'react'
 
 export const DiscountBanner = () => {
   return (
-    <div id='sticky-banner' tabIndex={-1} className='relative top-0 start-0 z-50 flex justify-between  p-4 '>
+    <div id='sticky-banner' tabIndex={-1} className='relative top-0 start-0 z-50 flex justify-between p-4 '>
       <div className='flex items-center mx-auto'>
         <p className='flex items-center text-sm font-normal text-gray-500 '>
           <span className='inline-flex p-1 me-3 bg-gray-200 rounded-full w-6 h-6 items-center justify-center flex-shrink-0'>
@@ -17,7 +17,7 @@ export const DiscountBanner = () => {
             </svg>
             <span className='sr-only'>Light bulb</span>
           </span>
-          <span className='text-center max-w-[320px] md:max-w-full'>
+          <span className='text-center max-w-[200px] md:max-w-full'>
             Enjoy early adopters 1st month 50% discount on starter plan. Use code{' '}
             <code className='text-md font-semibold text-pink-400 '>COFAI50</code>
           </span>

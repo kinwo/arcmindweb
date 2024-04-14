@@ -25,7 +25,7 @@ const MainJumbotron = () => {
             Deploy your own AI agent running on decentralized compute network. No data is stored on public cloud. Your
             data is yours.
           </p>
-          <div className='flex flex-col w-[200px]'>
+          <div className='flex flex-col w-[200px] space-y-2'>
             <Button gradientDuoTone='purpleToPink' className='text-xl w-[200px]' onClick={() => navigate('/signup')}>
               Sign Up
             </Button>{' '}
