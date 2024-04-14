@@ -47,7 +47,8 @@ const MainJumbotron = () => {
               >
                 Internet Computer
               </a>
-              &lsquo;s blockchain through ArcMind Vector DB for future question Retrieval Argumentation.
+              &lsquo;s blockchain through ArcMind Vector DB for future related question Retrieval Augumented Generation
+              (RAG).
             </p>
 
             <Link
