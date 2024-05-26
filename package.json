@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "DEBUG=arcmind:* next dev",
+    "dev": "DEBUG=arcmind:* next dev --port 3001",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -38,7 +38,9 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.12.0",
+    "react-markdown": "^9.0.1",
     "react-router-dom": "^6.21.1",
+    "remark-gfm": "^4.0.0",
     "sha256-file": "^1.0.0",
     "swr": "^2.2.4",
     "tailwindcss": "3.4.0",

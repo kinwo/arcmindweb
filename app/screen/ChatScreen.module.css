@@ -18,6 +18,38 @@
   @apply mb-4 text-slate-400;
 }
 
+.chat-container .message h1 {
+  @apply text-2xl font-semibold py-2;
+}
+
+.chat-container .message h2 {
+  @apply text-2xl font-semibold py-2;
+}
+
+.chat-container .message h3 {
+  @apply text-2xl font-semibold py-2;
+}
+
+.chat-container .message h4 {
+  @apply text-xl font-semibold py-2;
+}
+
+.chat-container .message p {
+  @apply pt-2 pb-2;
+}
+
+.chat-container .message ol {
+  @apply list-decimal pl-4;
+}
+
+.chat-container .message ul {
+  @apply list-disc list-inside;
+}
+
+.chat-container .message li {
+  @apply pb-2;
+}
+
 .question-parant {
   @apply fixed bottom-[80px] px-4 flex justify-center w-full left-0;
 }

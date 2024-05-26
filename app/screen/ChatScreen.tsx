@@ -2,6 +2,9 @@
 
 import React, { ChangeEvent, FormEvent, useCallback, useId, useState } from 'react'
 
+import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+
 import classNames from 'classnames'
 
 import _, { isArray } from 'lodash'
@@ -29,37 +32,68 @@ const ThoughtContent = ({ thoughts, command, fromName }: ThoughtContentProps) =>
   const argKeys: string[] = Object.keys(command.args)
 
   return (
-    <div className={style.message}>
+    <div className='text-slate-400 pb-2'>
       <div className='text-amorange'>{fromName}</div>
-      <div className='py-2'>{thoughts.speak}</div>
+      <div className='py-3'>{thoughts.speak}</div>
 
       <Accordion>
         <Accordion.Panel>
           <Accordion.Title>Thoughts</Accordion.Title>
           <Accordion.Content>
-            <div className='flex flex-col gap-y-3'>
-              <div className={classNames(style['thought-title'], 'text-amorange')}>Thoughts</div>
-              <div>{thoughts.text}</div>
-              <div className={classNames(style['thought-title'], 'text-amyellow')}>Plan</div>
-              <List>
-                {plans.map((plan, index) => {
+            <div className={style.message}>
+              <div className='flex flex-col gap-y-3'>
+                <div className={classNames(style['thought-title'], 'text-amorange')}>Thoughts</div>
+                <div>{thoughts.text}</div>
+                <div className={classNames(style['thought-title'], 'text-amyellow')}>Plan</div>
+                <List>
+                  {plans.map((plan, index) => {
+                    return (
+                      <div className={style.message} key={index}>
+                        <List.Item key={index}>{plan}</List.Item>
+                      </div>
+                    )
+                  })}
+                </List>
+                <div className={classNames(style['thought-title'], 'text-amgreen')}>Reasoning</div>
+                <div>{thoughts.reasoning}</div>
+                <div className={classNames(style['thought-title'], 'text-amblue')}>Criticism</div>
+                <div>{thoughts.criticism}</div>
+                <div className={classNames(style['thought-title'], 'text-ampink')}>Command - {command.name}</div>
+                <div>
+                  {argKeys.map((key, index) => {
+                    return (
+                      <div key={index}>
+                        <span className='font-semibold'>{key}:</span> {command.args[key]}
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+          </Accordion.Content>
+        </Accordion.Panel>
+      </Accordion>
+    </div>
+  )
+}
+
+const SearchResultContent = ({ fromName, searchResult }: SearchResultContentProps) => {
+  return (
+    <div className='text-slate-400 py-2'>
+      <div className='text-amorange py-2'>{fromName}</div>
+      <Accordion>
+        <Accordion.Panel>
+          <Accordion.Title>Search Result</Accordion.Title>
+          <Accordion.Content>
+            <div className={style.message}>
+              <div className='flex flex-col gap-y-3'>
+                {searchResult.map((result, index) => {
                   return (
                     <div className={style.message} key={index}>
-                      <List.Item key={index}>{plan}</List.Item>
-                    </div>
-                  )
-                })}
-              </List>
-              <div className={classNames(style['thought-title'], 'text-amgreen')}>Reasoning</div>
-              <div>{thoughts.reasoning}</div>
-              <div className={classNames(style['thought-title'], 'text-amblue')}>Criticism</div>
-              <div>{thoughts.criticism}</div>
-              <div className={classNames(style['thought-title'], 'text-ampink')}>Command - {command.name}</div>
-              <div>
-                {argKeys.map((key, index) => {
-                  return (
-                    <div key={index}>
-                      <span className='font-semibold'>{key}:</span> {command.args[key]}
+                      <Link href={result.link} className='text-amorange decoration-1 underline'>
+                        {result.title}
+                      </Link>
+                      <div>{result.snippet}</div>
                     </div>
                   )
                 })}
@@ -72,38 +106,15 @@ const ThoughtContent = ({ thoughts, command, fromName }: ThoughtContentProps) =>
   )
 }
 
-const SearchResultContent = ({ fromName, searchResult }: SearchResultContentProps) => {
-  return (
-    <div className={style.message}>
-      <div className='text-amorange py-2'>{fromName}</div>
-      <Accordion>
-        <Accordion.Panel>
-          <Accordion.Title>Search Result</Accordion.Title>
-          <Accordion.Content>
-            <div className='flex flex-col gap-y-3'>
-              {searchResult.map((result, index) => {
-                return (
-                  <div className={style.message} key={index}>
-                    <Link href={result.link} className='text-amorange decoration-1 underline'>
-                      {result.title}
-                    </Link>
-                    <div>{result.snippet}</div>
-                  </div>
-                )
-              })}
-            </div>
-          </Accordion.Content>
-        </Accordion.Panel>
-      </Accordion>
-    </div>
-  )
-}
-
 const NormalContent = ({ fromName, content }: GenericContentProps) => {
   return (
-    <div className={style.message}>
-      <div className='text-amorange'>{fromName}</div>
-      <div className='py-2'>{content}</div>
+    <div className='py-1'>
+      <div className={style.message}>
+        <div className='text-amorange'>{fromName}</div>
+        <div className='py-1'>
+          <Markdown remarkPlugins={[remarkGfm]}>{content}</Markdown>
+        </div>
+      </div>
     </div>
   )
 }
@@ -112,7 +123,9 @@ const UserContent = ({ fromName, content }: GenericContentProps) => {
   return (
     <div className={style.message}>
       <div className='text-ampink'>{fromName}</div>
-      <div className='py-2'>{content}</div>
+      <div className='py-1'>
+        <Markdown remarkPlugins={[remarkGfm]}>{content}</Markdown>
+      </div>
     </div>
   )
 }
