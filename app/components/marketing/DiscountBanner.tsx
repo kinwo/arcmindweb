@@ -2,7 +2,7 @@ import React from 'react'
 
 export const DiscountBanner = () => {
   return (
-    <div id='sticky-banner' tabIndex={-1} className='relative top-0 start-0 z-50 flex justify-between p-4 '>
+    <div id='sticky-banner' tabIndex={-1} className='relative top-0 start-0 z-50 flex justify-between py-4 -z-50'>
       <div className='flex items-center mx-auto'>
         <p className='flex items-center text-sm font-normal text-gray-500 '>
           <span className='inline-flex p-1 me-3 bg-gray-200 rounded-full w-6 h-6 items-center justify-center flex-shrink-0'>
