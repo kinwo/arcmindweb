@@ -1,29 +1,27 @@
 'use client'
 
-import React, { ChangeEvent, FormEvent, useCallback, useId, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react'
 
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
 import classNames from 'classnames'
 
-import _, { isArray } from 'lodash'
+import _, { isString } from 'lodash'
 
-import { createControllerActor } from '../canister/arcmindai'
-import { useChatHistory } from '../components/chat/useChatHistory'
 import { CenterSpinner } from '../components/Spinner'
 
 import { AlertMessage } from '../components/Alert'
 import { log } from '../util/log'
 import { useParams } from 'react-router-dom'
-import { useInternetIdentity } from '../components/auth/InternetIdentity'
-import { AuthButton } from '../components/auth/AuthButton'
-import { isJSON } from '../util/jsonutils'
-import { GenericContentProps, SearchResult, SearchResultContentProps, ThoughtContentProps } from './types'
+import { GenericContentProps, SearchResultContentProps, ThoughtContentProps } from './types'
 
 import style from './ChatScreen.module.css'
 import { Accordion, List } from 'flowbite-react'
 import Link from 'next/link'
+import { ChatMessage, ChatRole, isSearchResult, isThoughtContentProps } from '../types'
+import { collection, limit, onSnapshot, query, where, orderBy } from 'firebase/firestore'
+import { db, loginToDefaultUser } from '../client/firebase'
 
 const initialInput = ''
 
@@ -130,67 +128,128 @@ const UserContent = ({ fromName, content }: GenericContentProps) => {
   )
 }
 
+const TestUserId = 'testing'
+
 const ChatScreen = () => {
-  const { identity, isAuthenticated } = useInternetIdentity()
-
-  // Generate a unique id for the chat if not provided.
-  const hookId = useId()
-  const chatId = hookId
-
+  // const { identity, isAuthenticated } = useInternetIdentity()
   const { controllerId } = useParams()
+
+  const [isFBUserAuthed, setIsFBUserAuthed] = useState<boolean>(false)
 
   const myControllerId = controllerId || ''
 
-  const { messages, isLoading, isError } = useChatHistory(chatId, identity, myControllerId)
+  log.info('ChatScreen myControllerId: ', { myControllerId })
+
+  const [messages, setMessages] = useState<ChatMessage[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isError, setIsError] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (!myControllerId || !isFBUserAuthed) return
+
+    try {
+      setIsLoading(true)
+      setIsError(false)
+
+      const chatQuery = query(
+        collection(db, 'chat'),
+        where('userId', '==', TestUserId),
+        orderBy('createdAt', 'asc'),
+        limit(10)
+      )
+      const unsubscribe = onSnapshot(chatQuery, querySnapshot => {
+        log.info('ChatScreen querySnapshot:', querySnapshot)
+        const myMessages: ChatMessage[] = []
+
+        querySnapshot.forEach(doc => {
+          const message = doc.data()
+          myMessages.push({
+            id: doc.id,
+            content: message.content,
+            role: message.role,
+            createdAt: message.createdAt,
+          })
+        })
+
+        log.info('ChatScreen set messages:', myMessages)
+
+        setMessages(myMessages)
+      })
+
+      return unsubscribe
+    } catch (err) {
+      log.error('Error in fetching chat history', err as Error)
+      setIsError(true)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [myControllerId, setMessages, messages, isFBUserAuthed])
+
   const [input, setInput] = useState<string>(initialInput)
 
-  const submitGoal = useCallback(
-    async (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
-      if (!input || !identity) return
-
+  useEffect(() => {
+    async function loginFBAuth() {
       try {
-        setInput('')
-        await createControllerActor(identity, myControllerId).start_new_goal(input)
+        log.info('Logging in FB Auth')
+
+        await loginToDefaultUser()
+        setIsFBUserAuthed(true)
+
+        log.info('Logged in FB Auth')
       } catch (err) {
-        log.error('Error in submitting goal', err as Error)
+        log.error('Error in login FB Auth', err as Error)
+        setIsFBUserAuthed(false)
       }
-    },
-    [input, identity, myControllerId]
-  )
+    }
+
+    loginFBAuth()
+  }, [])
+
+  const submitGoal = useCallback(async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    // try {
+    //   setInput('')
+    //   await createControllerActor(identity, myControllerId).start_new_goal(input)
+    // } catch (err) {
+    //   log.error('Error in submitting goal', err as Error)
+    // }
+  }, [])
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value)
   }
 
   const togglePauseCOF = async () => {
-    if (!identity) return
-
-    try {
-      const result = await createControllerActor(identity, myControllerId).toggle_pause_cof()
-      log.info('Pause Chain of thoughts', { result })
-    } catch (err) {
-      log.error('Error in pausing Chain of thoughts', err as Error)
-    }
+    // if (!identity) return
+    // try {
+    //   const result = await createControllerActor(identity, myControllerId).toggle_pause_cof()
+    //   log.info('Pause Chain of thoughts', { result })
+    // } catch (err) {
+    //   log.error('Error in pausing Chain of thoughts', err as Error)
+    // }
   }
 
   const clearAllGoals = async () => {
-    if (!identity) return
-
-    try {
-      await createControllerActor(identity, myControllerId).clear_all_goals()
-    } catch (err) {
-      log.error('Error in clearing all goals', err as Error)
-    }
+    // if (!identity) return
+    // try {
+    //   await createControllerActor(identity, myControllerId).clear_all_goals()
+    // } catch (err) {
+    //   log.error('Error in clearing all goals', err as Error)
+    // }
   }
 
-  if (!isAuthenticated) {
-    return (
-      <div className={classNames(style.header, 'mx-auto')}>
-        <AuthButton />
-      </div>
-    )
-  }
+  // if (!isAuthenticated) {
+  //   return (
+  //     <div className={classNames(style.header, 'mx-auto')}>
+  //       <AuthButton />
+  //     </div>
+  //   )
+  // }
+
+  log.info('ChatScreen', { messages, isLoading, isError })
+
+  log.info('ChatScreen messages length', { length: messages.length })
 
   return (
     <>
@@ -207,33 +266,31 @@ const ChatScreen = () => {
 
       <section className={style['chat-container']}>
         {messages?.map((m, index) => {
-          const isUser = 'User' in m.role
-          const isSystem = 'System' in m.role
+          log.info('ChatScreen message iterate:', m)
+
+          const isUser = m.role === ChatRole.user
+          const isSystem = m.role === ChatRole.system
           const fromName: string = isUser ? 'User' : isSystem ? 'System' : 'ArcMind'
           const content = m.content
 
           // check if content has thoughts property
-          const contentJSON = isJSON(content)
-          const isThought = contentJSON && 'thoughts' in contentJSON
-          const isSearchResult = contentJSON && isArray(contentJSON) && 'link' in contentJSON[0]
-
-          if (isThought) {
-            const thoughtsContent = contentJSON as ThoughtContentProps
-            const { thoughts, command } = thoughtsContent
-
+          if (isThoughtContentProps(content)) {
+            const { thoughts, command } = content
             return <ThoughtContent fromName={fromName} thoughts={thoughts} command={command} key={index} />
           }
 
-          if (isSearchResult) {
-            const searchResult = contentJSON as SearchResult[]
-            return <SearchResultContent fromName={fromName} searchResult={searchResult} key={index} />
+          if (isSearchResult(content)) {
+            return <SearchResultContent fromName={fromName} searchResult={content} key={index} />
           }
+
+          const safeContent: string = !isString(content) ? JSON.stringify(content) : content
+          log.info('ChatScreen safeContent:', { safeContent })
 
           if (isUser) {
-            return <UserContent fromName={fromName} content={content} key={index} />
+            return <UserContent fromName={fromName} content={safeContent} key={index} />
           }
 
-          return <NormalContent fromName={fromName} content={content} key={index} />
+          return <NormalContent fromName={fromName} content={safeContent} key={index} />
         })}
       </section>
       <form onSubmit={submitGoal}>
