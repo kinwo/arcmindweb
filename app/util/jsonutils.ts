@@ -1,6 +1,7 @@
-export const isJSON = (obj: unknown | null | undefined) => {
-  if (obj === null || obj === undefined) {
-    return false
+export const isJSON = (str: string) => {
+  try {
+    return JSON.parse(str)
+  } catch (e) {
+    return null
   }
-  return typeof obj === 'object' && obj.constructor === Object
 }
