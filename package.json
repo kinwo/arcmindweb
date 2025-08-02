@@ -6,7 +6,8 @@
     "dev": "DEBUG=arcmind:* next dev --port 3001",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "ts-check": "tsc --noEmit"
   },
   "dependencies": {
     "@dfinity/agent": "^0.20.2",

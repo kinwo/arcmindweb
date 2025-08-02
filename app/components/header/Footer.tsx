@@ -1,15 +1,13 @@
-import React from 'react'
-
-import style from './Footer.module.css'
-import { PoweredByICSquare } from '../icons'
 import Link from 'next/link'
+import { PoweredByICSquare } from '../icons'
+import style from './Footer.module.css'
 
 export const Footer = () => {
   return (
     <section className={style.footerContainer}>
       <div className={style.footer}></div>
       <div className='flex flex-row w-full pb-4 space-x-4 justify-center'>
-        <div>© 2024 ArcMind AI</div>
+        <div>© 2025 ArcMind AI</div>
         <Link href='https://github.com/arcmindai/arcmindai' target='_blank'>
           GitHub
         </Link>

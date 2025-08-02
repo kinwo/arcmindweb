@@ -1,13 +1,12 @@
-import React from 'react'
 import { Link, useMatch } from 'react-router-dom'
 
 import style from './Header.module.css'
 
-import { GuestMenu } from './GuestMenu'
-import { UserMenu } from './UserMenu'
 import { useInternetIdentity } from '../auth/InternetIdentity'
 import { Logo } from '../icons'
-import { DiscountBanner } from '../marketing/DiscountBanner'
+import { ShutdownBanner } from '../marketing/ShutdownBanner'
+import { GuestMenu } from './GuestMenu'
+import { UserMenu } from './UserMenu'
 
 export const Header = () => {
   const { isAuthenticated, identity, controllerId, signout } = useInternetIdentity()
@@ -17,7 +16,7 @@ export const Header = () => {
 
   return (
     <section>
-      {isHome && <DiscountBanner />}
+      {isHome && <ShutdownBanner />}
 
       <div className={style.header}>
         <div className={style.title}>
