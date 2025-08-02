@@ -1,10 +1,8 @@
-import React from 'react'
-
 import { Button, Dropdown } from 'flowbite-react'
-import { HiLogin, HiOutlineMenu, HiUserAdd } from 'react-icons/hi'
+import { HiLogin, HiOutlineMenu } from 'react-icons/hi'
 
-import style from './Menu.module.css'
 import { useNavigate } from 'react-router-dom'
+import style from './Menu.module.css'
 
 export const GuestMenu = () => {
   const navigate = useNavigate()
@@ -19,9 +17,6 @@ export const GuestMenu = () => {
         </Button>
       )}
     >
-      <Dropdown.Item icon={HiUserAdd} className={style.menuItem} onClick={() => navigate('/signup')}>
-        Sign Up
-      </Dropdown.Item>
       <Dropdown.Item icon={HiLogin} className={style.menuItem} onClick={() => navigate('/signin')}>
         Sign In
       </Dropdown.Item>

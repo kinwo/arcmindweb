@@ -1,19 +1,14 @@
 'use client'
-import React from 'react'
 
 import Head from 'next/head'
 import { FiExternalLink } from 'react-icons/fi'
 
 import style from './HomeScreen.module.css'
 
-import { useNavigate } from 'react-router-dom'
-import { Button } from 'flowbite-react'
-import { AuthButton } from '../components/auth/AuthButton'
 import Link from 'next/link'
+import { AuthButton } from '../components/auth/AuthButton'
 
 const MainJumbotron = () => {
-  const navigate = useNavigate()
-
   return (
     <section className='bg-white '>
       <div className='px-4 mx-auto max-w-screen-xl'>
@@ -26,10 +21,6 @@ const MainJumbotron = () => {
             data is yours.
           </p>
           <div className='flex flex-col w-[200px] space-y-2'>
-            <Button gradientDuoTone='purpleToPink' className='text-xl w-[200px]' onClick={() => navigate('/signup')}>
-              Sign Up
-            </Button>{' '}
-            <div className='text-center'>or</div>
             <AuthButton />
           </div>
         </div>
@@ -52,11 +43,11 @@ const MainJumbotron = () => {
             </p>
 
             <Link
-              href='https://youtu.be/FfK5ZXFrQ4Q?si=chXalP-a72KVCisQ'
+              href='https://github.com/arcmindai/arcmindai'
               target='_blank'
               className='flex space-x-2 text-center pb-[20px]'
             >
-              <h2 className='text-2xl underline decoration-ampink text-center'>Watch Demo</h2>
+              <h2 className='text-2xl underline decoration-ampink text-center'>Open Github</h2>
               <FiExternalLink className='top-[9px] relative' />
             </Link>
           </div>
@@ -67,9 +58,6 @@ const MainJumbotron = () => {
               Google search and browse websites tools. Explore the knowledge graph and understand the context of the
               content with intitive UI. Reduce AI hullcination and increase the credibility of your result.
             </p>
-            <Button gradientDuoTone='purpleToPink' className='text-xl w-[200px]' onClick={() => navigate('/signup')}>
-              Sign Up
-            </Button>
           </div>
         </div>
       </div>

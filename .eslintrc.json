@@ -1,5 +1,5 @@
 {
-  "extends": ["next/core-web-vitals", "plugin:react/recommended", "standard"],
+  "extends": ["next/core-web-vitals", "plugin:react/recommended", "standard", "plugin:react/jsx-runtime"],
   "env": {
     "browser": true,
     "es2021": true
